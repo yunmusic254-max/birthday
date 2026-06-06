@@ -16,7 +16,7 @@
             min-height: 100vh;
             text-align: center;
             position: relative;
-            overflow-x: hidden;
+            overflow: hidden;
         }
         #hearts-container {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
@@ -52,7 +52,6 @@
             width: 100%; max-height: 300px; object-fit: cover;
             border-radius: 15px; margin-bottom: 15px;
             border: 2px solid rgba(255, 255, 255, 0.2);
-            transition: opacity 0.3s ease;
         }
         
         /* Gaya Kad Magik */
@@ -76,39 +75,65 @@
         .card-front {
             background: linear-gradient(135deg, #4a00e0, #8e2de2);
             border: 2px solid #ff758f; color: #fff;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
         .card-back {
             background: #250938; border: 2px solid #ff4d6d;
             color: #ff758f; transform: rotateY(180deg);
         }
 
-        /* Canvas untuk Bunga Api */
-        canvas {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            pointer-events: none; z-index: 2; 
-        }
-        
-        /* Halaman Interaktif Bunga Api (Dibaiki sistem paparan) */
+        /* HALAMAN IMERSIF BUNGA API BARU (Kalis Gelap) */
         #fireworks-screen {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: #050107; z-index: 99; 
+            background-color: #050107 !important; 
+            z-index: 999; 
             display: none;
-            justify-content: center; align-items: center;
+            overflow: hidden;
+            touch-action: none;
         }
         .fw-instruction {
             position: absolute; top: 40px; width: 100%; text-align: center;
             color: #ff758f; font-size: 1.2rem; font-weight: bold;
             text-shadow: 0 0 10px rgba(255,117,143,0.5);
             pointer-events: none; padding: 0 20px;
-            z-index: 100;
+            z-index: 1000;
+        }
+
+        /* Animasi Letupan Huruf */
+        .fw-letter {
+            position: absolute;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: #ff4d6d;
+            text-shadow: 0 0 20px #ff758f, 0 0 30px #ff4d6d;
+            transform: translate(-50%, -50%) scale(0);
+            animation: popOut 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            pointer-events: none;
+        }
+        @keyframes popOut {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+        }
+
+        /* Animasi Percikan Sparkle */
+        .sparkle {
+            position: absolute;
+            width: 6px; height: 6px;
+            background-color: #ffd166;
+            border-radius: 50%;
+            pointer-events: none;
+            box-shadow: 0 0 10px #ffd166;
+            animation: explode 0.8s ease-out forwards;
+        }
+        @keyframes explode {
+            0% { transform: translate(-50%, -50%) translate(0, 0); opacity: 1; }
+            100% { transform: translate(-50%, -50%) translate(var(--mx), var(--my)); opacity: 0; }
         }
     </style>
 </head>
 <body>
 
     <div id="hearts-container"></div>
-    <canvas id="fwCanvas"></canvas>
 
     <audio id="bg-music" loop>
         <source src="JVKE, ZVC - made for me (official lyric video) [OVlxbGND20A].mp3" type="audio/mp3">
