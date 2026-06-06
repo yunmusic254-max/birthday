@@ -29,11 +29,16 @@
     </style>
 </head>
 <body>
+    <!-- Muzik Latar -->
+    <audio id="bg-music" loop>
+        <source src="music.mp3" type="audio/mp3">
+    </audio>
+
     <div id="hearts-container"></div>
     <div id="intro-screen" class="container">
         <h1>Hey Beautiful! ✨</h1>
         <p>Yun ada surprise untuk Baby.</p>
-        <button class="btn" onclick="nextPage('intro-screen', 'main-content')">Open Surprise 🎁</button>
+        <button class="btn" onclick="playMusic(); nextPage('intro-screen', 'main-content')">Open Surprise 🎁</button>
     </div>
 
     <div id="main-content" class="container" style="display: none; opacity: 0;">
@@ -71,6 +76,7 @@
     </div>
 
     <script>
+        function playMusic() { const music = document.getElementById('bg-music'); music.play(); }
         function createHeart() { const h = document.createElement('div'); h.classList.add('heart'); h.innerHTML = '❤️'; h.style.left = Math.random() * 100 + 'vw'; h.style.animationDuration = (Math.random() * 3 + 2) + 's'; document.getElementById('hearts-container').appendChild(h); setTimeout(() => h.remove(), 5000); }
         setInterval(createHeart, 500);
         function nextPage(c, n) { document.getElementById(c).style.opacity = '0'; setTimeout(() => { document.getElementById(c).style.display = 'none'; document.getElementById(n).style.display = 'block'; setTimeout(() => document.getElementById(n).style.opacity = '1', 50); }, 500); }
