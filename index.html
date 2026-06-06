@@ -8,19 +8,27 @@
 </head>
 <body>
 
+    <!-- Kontainer untuk Efek Hati Gugur -->
+    <div class="hearts-container" id="hearts-container"></div>
+
     <!-- HALAMAN PERTAMA (Intro) -->
     <div id="intro-screen">
-        <h1 class="main-title">Hey Baby, Happy Birthday! ✨</h1>
-        <p class="click-hint">I made something small for you. Tekan sini babyyy...</p>
+        <h1 class="main-title">Hey Beautiful, Happy Birthday! ✨</h1>
+        <p class="click-hint">I made something special for you. Click below to open it...</p>
         <button class="enter-btn" onclick="nextPage()">Open Surprise 🎁</button>
     </div>
 
-    <!-- HALAMAN KEDUA (Isi Kandungan/Surprise) -->
+    <!-- HALAMAN KEDUA (Surprise + Gambar) -->
     <div id="main-content">
         <h2>Reasons Why I Love You 🥰</h2>
         
         <div class="card">
-            <p id="reason-text">Tekan sini babyy below to see a reason...</p>
+            <!-- Ruang Gambar Memori Korang -->
+            <div class="img-container">
+                <img id="love-image" src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=500" alt="Our Memory">
+            </div>
+            
+            <p id="reason-text">Click the button below to see a reason...</p>
             <button class="enter-btn" onclick="generateReason()">Next Reason ❤️</button>
         </div>
     </div>
