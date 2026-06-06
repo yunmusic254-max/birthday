@@ -198,18 +198,17 @@
         <button class="btn" onclick="startMusic(); nextPage('intro-screen', 'main-content')">Open Surprise 🎁</button>
     </div>
 
-    <!-- HALAMAN 2: FIX BANTAH GAMBAR MELEKAT -->
+    <!-- HALAMAN 2 -->
     <div id="main-content" class="container" style="display: none; opacity: 0;">
         <h1>Kenapa Yun Sayang Baby ❤️</h1>
         <div class="love-card">
-            <!-- Letak imej asal dulu -->
             <img id="love-image" src="photo_6134180195070578679_y.jpg" alt="Memori Kita">
             <p id="reason-text">Sebab baby selalu tahu macam mana nak buat Yun tersenyum. ☀️</p>
         </div>
         <button id="next-btn" class="btn" onclick="generateReason()">Next Reason ❤️</button>
     </div>
 
-    <!-- HALAMAN 3: FIX KAD FLIP SERENTAK -->
+    <!-- HALAMAN 3 -->
     <div id="game-screen" class="container" style="display: none; opacity: 0;">
         <h1>✨ Kad Magik Keberuntungan ✨</h1>
         <p>Pilih SATU kad magik di bawah untuk tebus hadiah misteri daripada Yun! 🤭</p>
@@ -244,7 +243,7 @@
             <h2>A Message From Yun ❤️</h2>
             <p>
                 Happy Birthday Sayang! 🎂🎉<br><br>
-                Yun nak mintak maaf kalau selama ni Yun jadi boyfriend yang kurang and sometimes annoying buat baby... I am truly sorry. Tapi Yun nak baby tahu yang Yun sentiasa sayang baby sangat-sakat. ❤️<br><br>
+                Yun nak mintak maaf kalau selama ni Yun jadi boyfriend yang kurang and sometimes annoying buat baby... I am truly sorry. Tapi Yun nak baby tahu yang Yun sentiasa sayang baby sangat-sangat. ❤️<br><br>
                 And lastly, <b>GOOD LUCK SPM BABY!</b> Yun tahu baby dah usaha kuat dan Yun sentiasa doakan baby boleh buat yang terbaik nanti! My queen can do this! 👑✨
             </p>
         </div>
@@ -294,8 +293,7 @@
             }
         }
 
-        // --- 3. FIX ALASAN & GAMBAR BERTUKAR ---
-        // Masukkan senarai nama fail gambar Yun dekat sini mengikut urutan alasan!
+        // --- 3. ALASAN & PAKSA TUKAR GAMBAR KELUAR ---
         const reasons = [
             "Sebab baby selalu tahu macam mana nak buat Yun tersenyum. ☀️",
             "Sebab setiap kali borak dengan baby, rasa tenang sangat hati ni. 🧸",
@@ -303,12 +301,12 @@
             "Sebab Yun nampak masa depan Yun ada bersama baby tau! 💍"
         ];
         
-        // Yun gantikan nama fail gambar dekat bawah ni ikut gambar sebenar dalam repo Yun!
+        // Letak ?v=1, ?v=2 untuk paksa sistem panggil fail secara segar dari pelayan
         const images = [
-            "photo_6134180195070578679_y.jpg", // Gambar alasan 1
-            "photo_6134180195070578679_y.jpg", // Gambar alasan 2 (tukar nama fail kalau ada gambar lain)
-            "photo_6134180195070578679_y.jpg", // Gambar alasan 3
-            "photo_6134180195070578679_y.jpg"  // Gambar alasan 4
+            "photo_6134180195070578679_y.jpg?v=1", 
+            "photo_6134180195070578679_y.jpg?v=2", 
+            "photo_6134180195070578679_y.jpg?v=3", 
+            "photo_6134180195070578679_y.jpg?v=4"
         ];
         
         let currentReasonIdx = 0;
@@ -317,12 +315,9 @@
             currentReasonIdx++;
             if (currentReasonIdx < reasons.length) {
                 document.getElementById('reason-text').innerText = reasons[currentReasonIdx];
-                
-                // Kod penukar gambar automatik
                 if(images[currentReasonIdx]) {
                     document.getElementById('love-image').src = images[currentReasonIdx];
                 }
-                
                 if(currentReasonIdx === reasons.length - 1) {
                     document.getElementById('next-btn').innerText = "Go to Gift Game 🔮";
                 }
@@ -331,7 +326,7 @@
             }
         }
 
-        // --- 4. FIX SAKAN KAD FLIP SERENTAK ---
+        // --- 4. GAME KAD (KOD BARU BERASINGAN) ---
         const gifts = [
             "🧸 Hadiah Comel: Teddy Bear Besar untuk peneman tidur Baby!",
             "📞 Denda Comel: Kena Call Yun Sekarang Juga! 😜",
@@ -352,15 +347,14 @@
             if (hasFlipped) return;
             hasFlipped = true;
 
-            // Masukkan teks hadiah ke semua kad siap-siap
             for (let i = 0; i < 4; i++) {
                 document.getElementById(`gift-${i}`).innerText = gifts[i];
             }
 
-            // Pusingkan HANYA KAD YANG DIKLIK SAHAJA
+            // Pusing kad terpilih sahaja
             cardElement.classList.add('flipped');
 
-            // Kad lain hanya akan dipusingkan 1.2 saat KEMUDIAN (Bukan serentak!)
+            // Kad lain tunggu 1.5 saat baru pusing
             const allCards = document.querySelectorAll('.magic-card');
             setTimeout(() => {
                 allCards.forEach((c, i) => {
@@ -368,14 +362,14 @@
                         c.classList.add('flipped');
                     }
                 });
-            }, 1200);
+            }, 1500);
 
             const status = document.getElementById('game-status');
             status.innerText = "Tahniah Baby! Sila screenshot kad ini dan hantar pada Yun untuk tebus:\n\n\" " + gifts[index] + " \"";
             
             setTimeout(() => {
-                document.getElementById('go-fw-btn').style.display = 'inline-block';
-            }, 2000);
+                document.getElementById('go-fw-btn').style.style.display = 'inline-block';
+            }, 2200);
         }
 
         // --- 5. BUNGA API ---
