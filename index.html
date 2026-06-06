@@ -191,21 +191,25 @@
         <source src="JVKE, ZVC - made for me (official lyric video) [OVlxbGND20A].mp3" type="audio/mp3">
     </audio>
 
+    <!-- HALAMAN 1 -->
     <div id="intro-screen" class="container">
         <h1>Hey Beautiful, Happy Birthday! ✨</h1>
         <p>Yun ada buat sesuatu yang istimewa yang dipenuhi dengan memori kita bersama. Sila klik butang di bawah, Baby.</p>
         <button class="btn" onclick="startMusic(); nextPage('intro-screen', 'main-content')">Open Surprise 🎁</button>
     </div>
 
+    <!-- HALAMAN 2 -->
     <div id="main-content" class="container" style="display: none; opacity: 0;">
         <h1>Kenapa Yun Sayang Baby ❤️</h1>
         <div class="love-card">
+            <!-- Gambar Pertama Start Kat Sini -->
             <img id="love-image" src="photo_6134180195070578679_y.jpg" alt="Memori Kita">
             <p id="reason-text">Sebab baby selalu tahu macam mana nak buat Yun tersenyum. ☀️</p>
         </div>
         <button id="next-btn" class="btn" onclick="generateReason()">Next Reason ❤️</button>
     </div>
 
+    <!-- HALAMAN 3 -->
     <div id="game-screen" class="container" style="display: none; opacity: 0;">
         <h1>✨ Kad Magik Keberuntungan ✨</h1>
         <p>Pilih SATU kad magik di bawah untuk tebus hadiah misteri daripada Yun! 🤭</p>
@@ -231,6 +235,7 @@
         <button id="go-fw-btn" class="btn" style="display: none;" onclick="openFireworksSkrin()">Next Surprise! 🎆</button>
     </div>
 
+    <!-- HALAMAN 4 -->
     <div id="fireworks-screen" onclick="letupkanBungaApiSini(event)">
         <div class="fw-instruction" id="fw-hint">Klik dekat mana-mana kawasan skrin sekarang! 🤫✨</div>
         <div id="gift-envelope" onclick="bukaKotakSuratYun(event)">✉️</div>
@@ -269,7 +274,7 @@
         function startMusic() {
             if (!musicStarted) {
                 const music = document.getElementById('bg-music');
-                if(music) music.play().catch(e => console.log("Muzik perlukan interaksi."));
+                if(music) music.play().catch(e => console.log("Muzik diaktifkan."));
                 musicStarted = true;
             }
         }
@@ -289,7 +294,7 @@
             }
         }
 
-        // --- 3. SISTEM TUKAR ALASAN & GAMBAR FRESH ---
+        // --- 3. ALASAN & SUSUNAN GAMBAR ASLI KAU ---
         const reasons = [
             "Sebab baby selalu tahu macam mana nak buat Yun tersenyum. ☀️",
             "Sebab setiap kali borak dengan baby, rasa tenang sangat hati ni. 🧸",
@@ -297,12 +302,12 @@
             "Sebab Yun nampak masa depan Yun ada bersama baby tau! 💍"
         ];
         
-        // Letak penanda dinamik (?v=) supaya pelayan hantar imej bersih tanpa cache melekat
+        // NAMA FAIL SEBENAR DAH SIAP DIMASUKKAN DI SINI:
         const images = [
-            "photo_6134180195070578679_y.jpg?v=101", 
-            "photo_6134180195070578679_y.jpg?v=102", 
-            "photo_6134180195070578679_y.jpg?v=103", 
-            "photo_6134180195070578679_y.jpg?v=104"
+            "photo_6134180195070578679_y.jpg", 
+            "photo_6134180195070578680_y.jpg", 
+            "photo_6134180195070578684_y.jpg", 
+            "photo_6134180195070578685_y.jpg"
         ];
         
         let currentReasonIdx = 0;
@@ -322,7 +327,7 @@
             }
         }
 
-        // --- 4. GAME KAD (C BESAR - FIX TYPO KAD BERPUSING SERENTAK) ---
+        // --- 4. GAME KAD (FUNGSI ASING - KAD DIPILIH SAHAJA BUKA DULU) ---
         const gifts = [
             "🧸 Hadiah Comel: Teddy Bear Besar untuk peneman tidur Baby!",
             "📞 Denda Comel: Kena Call Yun Sekarang Juga! 😜",
@@ -339,6 +344,7 @@
         }
         shuffle(gifts);
 
+        // NAMA FUNGSI DAH SAMA: flipCard (Huruf C besar)
         function flipCard(cardElement, index) {
             if (hasFlipped) return;
             hasFlipped = true;
@@ -347,10 +353,8 @@
                 document.getElementById(`gift-${i}`).innerText = gifts[i];
             }
 
-            // Pusingkan satu kad yang diklik dahulu
             cardElement.classList.add('flipped');
 
-            // Kad selebihnya hanya akan dibuka selepas kelewatan 1.5 saat
             const allCards = document.querySelectorAll('.magic-card');
             setTimeout(() => {
                 allCards.forEach((c, i) => {
@@ -414,6 +418,7 @@
             }
         }
 
+        // FUNGSI SPARKLE
         function buatLetupanSparkle(x, y) {
             const skrin = document.getElementById('fireworks-screen');
             for (let i = 0; i < 30; i++) {
@@ -439,6 +444,7 @@
             }
         }
 
+        // BUKA SURAT
         function bukaKotakSuratYun(e) {
             if (e) e.stopPropagation();
             const envelope = document.getElementById('gift-envelope');
