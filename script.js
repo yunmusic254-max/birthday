@@ -18,110 +18,8 @@ const luckyGifts = [
 
 let currentIndex = 0;
 let hasSelectedCard = false;
-const birthdayLetters = ["H", "A", "P", "P", "Y", " ", "B", "I", "R", "T", "H", "D", "A", "Y"];
+const birthdayLetters = ["H", "A", "P", "P", "Y", "❤️", "B", "I", "R", "T", "H", "D", "A", "Y"];
 let letterIndex = 0;
-let particles = [];
-let canvas, ctx;
-
-window.addEventListener('DOMContentLoaded', () => {
-    canvas = document.getElementById('fwCanvas');
-    if(canvas) {
-        ctx = canvas.getContext('2d');
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
-        animateFireworks();
-    }
-});
-
-function resizeCanvas() {
-    if(canvas) {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-}
-
-class Particle {
-    constructor(x, y, color, angle, speed, isGlitter = false, letter = '') {
-        this.x = x;
-        this.y = y;
-        this.color = color;
-        this.angle = angle;
-        this.speed = speed;
-        this.friction = isGlitter ? 0.96 : 0.95;
-        this.gravity = isGlitter ? 0.08 : 0.12;
-        this.vx = Math.cos(angle) * speed;
-        this.vy = Math.sin(angle) * speed;
-        this.alpha = 1;
-        this.decay = isGlitter ? 0.015 : 0.02;
-        this.isGlitter = isGlitter;
-        this.letter = letter;
-    }
-    update() {
-        this.vx *= this.friction;
-        this.vy *= this.friction;
-        this.vy += this.gravity;
-        this.x += this.vx;
-        this.y += this.vy;
-        this.alpha -= this.decay;
-    }
-    draw() {
-        if(!ctx) return;
-        ctx.save();
-        ctx.globalAlpha = this.alpha;
-        if (this.letter) {
-            ctx.font = 'bold 55px Arial, sans-serif';
-            ctx.fillStyle = '#ff4d6d';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.shadowBlur = 25;
-            ctx.shadowColor = '#ff758f';
-            ctx.fillText(this.letter, this.x, this.y);
-        } else {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.isGlitter ? Math.random() * 2 + 1.5 : 4.5, 0, Math.PI * 2);
-            ctx.fillStyle = this.color;
-            if (this.isGlitter) {
-                ctx.shadowBlur = 10;
-                ctx.shadowColor = '#fff';
-            }
-            ctx.fill();
-        }
-        ctx.restore();
-    }
-}
-
-function animateFireworks() {
-    if(!ctx || !canvas) return;
-    ctx.fillStyle = 'rgba(11, 2, 12, 0.2)'; 
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
-    for (let i = particles.length - 1; i >= 0; i--) {
-        particles[i].update();
-        if (particles[i].alpha <= 0) {
-            particles.splice(i, 1);
-        } else {
-            particles[i].draw();
-        }
-    }
-    requestAnimationFrame(animateFireworks);
-}
-
-function createHeartFirework(targetX, targetY) {
-    const totalPoints = 65;
-    const color = `hsl(${Math.random() * 30 + 340}, 100%, 65%)`; 
-    
-    for (let i = 0; i < totalPoints; i++) {
-        const t = (i / totalPoints) * Math.PI * 2;
-        const xOffset = 16 * Math.pow(Math.sin(t), 3);
-        const yOffset = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
-        
-        const angle = Math.atan2(yOffset, xOffset);
-        const speed = Math.sqrt(xOffset * xOffset + yOffset * yOffset) * 0.35;
-        
-        particles.push(new Particle(targetX, targetY, color, angle, speed, false));
-        particles.push(new Particle(targetX, targetY, '#ffffff', angle + (Math.random() - 0.5), speed * 0.7, true));
-    }
-}
 
 function startMusic() {
     const music = document.getElementById('bg-music');
@@ -178,85 +76,82 @@ function flipCard(cardElement, index) {
     cardElement.classList.add('flipped');
     hasSelectedCard = true;
     
-    const rect = cardElement.getBoundingClientRect();
-    const clickX = rect.left + rect.width / 2;
-    const clickY = rect.top + rect.height / 2;
-    createHeartFirework(clickX, clickY);
-    
     const chosenGift = document.getElementById(`gift-${index}`).innerText;
     document.getElementById('game-status').innerText = `Tahniah Baby! Sila screenshot kad ini dan hantar pada Yun untuk tebus: \n\n "${chosenGift}"`;
     
     setTimeout(() => {
         document.getElementById('go-fw-btn').style.display = 'inline-block';
-    }, 2000);
+    }, 1500);
 }
 
 function goToFireworksScreen() {
-    // Sembunyikan kad game
     document.getElementById('game-screen').style.display = 'none';
-    
-    // Aktifkan skrin penuh untuk mendengar ketukan bunga api
     const fwScreen = document.getElementById('fireworks-screen');
     fwScreen.style.display = 'block';
-    
-    // Tukar tetapan canvas supaya boleh menerima klik terus pada skrin telefon
-    if(canvas) {
-        canvas.style.pointerEvents = 'auto';
-        canvas.style.zIndex = '100';
-    }
 
-    // Ikat fungsi ketukan terus pada elemen skrin akhir secara dinamik
-    fwScreen.addEventListener('click', launchLetterFirework);
-    fwScreen.addEventListener('touchstart', launchLetterFirework);
+    // Sambung fungsi klik & touch terus ke skrin hitam baru
+    fwScreen.addEventListener('click', triggerHTMLFirework);
+    fwScreen.addEventListener('touchstart', triggerHTMLFirework);
 }
 
-function launchLetterFirework(event) {
-    if (event) event.preventDefault();
-
-    let clickX, clickY;
-    if (event.changedTouches && event.changedTouches.length > 0) {
-        clickX = event.changedTouches[0].clientX;
-        clickY = event.changedTouches[0].clientY;
-    } else if (event.touches && event.touches.length > 0) {
-        clickX = event.touches[0].clientX;
-        clickY = event.touches[0].clientY;
-    } else {
-        clickX = event.clientX;
-        clickY = event.clientY;
+function triggerHTMLFirework(e) {
+    // Cari kedudukan koordinat x & y sentuhan
+    let x = e.clientX || (e.touches && e.touches[0].clientX);
+    let y = e.clientY || (e.touches && e.touches[0].clientY);
+    
+    if(!x || !y) {
+        x = window.innerWidth / 2;
+        y = window.innerHeight / 2;
     }
 
-    if (!clickX || !clickY) {
-        clickX = window.innerWidth / 2;
-        clickY = window.innerHeight / 2;
-    }
+    const fwScreen = document.getElementById('fireworks-screen');
 
-    if (letterIndex >= birthdayLetters.length) {
-        document.getElementById('fw-hint').innerText = "Happy Birthday Sekali Lagi Sayang! I Love You So Much ❤️✨";
-        createHeartFirework(clickX, clickY);
-        return;
-    }
-
-    const currentLetter = birthdayLetters[letterIndex];
-    letterIndex++;
-
-    if (currentLetter === " ") {
-        createHeartFirework(clickX, clickY);
-    } else {
-        // Keluarkan letupan huruf bersinar
-        particles.push(new Particle(clickX, clickY, '#ff4d6d', 0, 0, false, currentLetter));
-        
-        // Taburkan glitter berkilauan di sekeliling huruf tersebut
-        for (let i = 0; i < 30; i++) {
-            const angle = Math.random() * Math.PI * 2;
-            const speed = Math.random() * 6 + 2;
-            particles.push(new Particle(clickX, clickY, '#ffd166', angle, speed, true));
-        }
-    }
-
+    // 1. Letupkan Huruf
     if (letterIndex < birthdayLetters.length) {
-        document.getElementById('fw-hint').innerText = `Tap lagi, jom habiskan! (Huruf seterusnya...) ✨`;
+        const letterDiv = document.createElement('div');
+        letterDiv.classList.add('fw-letter');
+        letterDiv.style.left = `${x}px`;
+        letterDiv.style.top = `${y}px`;
+        letterDiv.innerText = birthdayLetters[letterIndex];
+        fwScreen.appendChild(letterDiv);
+        
+        letterIndex++;
+        
+        // Buang elemen selepas animasi tamat
+        setTimeout(() => { letterDiv.remove(); }, 1000);
+    }
+
+    // 2. Letupkan 20 serpihan Sparkle di sekeliling ketukan
+    for (let i = 0; i < 20; i++) {
+        const sparkle = document.createElement('div');
+        sparkle.classList.add('sparkle');
+        sparkle.style.left = `${x}px`;
+        sparkle.style.top = `${y}px`;
+        
+        // Setkan arah letupan rawak (360 darjah) menggunakan CSS Variable
+        const angle = Math.random() * Math.PI * 2;
+        const distance = Math.random() * 100 + 50;
+        const mx = Math.cos(angle) * distance;
+        const my = Math.sin(angle) * distance;
+        
+        sparkle.style.setProperty('--mx', `${mx}px`);
+        sparkle.style.setProperty('--my', `${my}px`);
+        
+        // Warna rawak warni untuk sparkle
+        const colors = ['#ff4d6d', '#ff758f', '#ffd166', '#4a00e0', '#fff'];
+        sparkle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        sparkle.style.boxShadow = `0 0 10px ${sparkle.style.backgroundColor}`;
+
+        fwScreen.appendChild(sparkle);
+        setTimeout(() => { sparkle.remove(); }, 800);
+    }
+
+    // 3. Kemas kini arahan teks di bahagian atas skrin
+    const hintElement = document.getElementById('fw-hint');
+    if (letterIndex < birthdayLetters.length) {
+        hintElement.innerText = `Tap lagi, jom habiskan! (Huruf seterusnya...) ✨`;
     } else {
-        document.getElementById('fw-hint').innerText = "Yayyy! Selesai! Selamat Hari Jadi Sayang! ❤️🎂 (Tap untuk letupan bonus!)";
+        hintElement.innerText = "Happy Birthday Sekali Lagi Sayang! I Love You So Much ❤️🎂 (Tap puas-puas!)";
     }
 }
 
