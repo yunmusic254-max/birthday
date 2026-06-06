@@ -34,7 +34,17 @@ const memories = [
     }
 ];
 
-// --- JANGAN UBAH KOD DI BAWAH INI ---
+let currentIndex = 0;
+
+// Fungsi untuk susun gambar secara rawak pada permulaan (Shuffle)
+function shuffleMemories() {
+    for (let i = memories.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [memories[i], memories[j]] = [memories[j], memories[i]];
+    }
+}
+shuffleMemories(); // Jalankan shuffle sekali masa website mula-mula buka
+
 function nextPage() {
     document.getElementById('intro-screen').style.opacity = '0';
     setTimeout(() => {
@@ -49,16 +59,23 @@ function generateReason() {
     const textElement = document.getElementById('reason-text');
     const imgElement = document.getElementById('love-image');
     
-    // Pilih memori secara rawak dari senarai di atas
-    const randomIndex = Math.floor(Math.random() * memories.length);
-    
-    textElement.innerText = memories[randomIndex].text;
+    // Tukar teks dan gambar mengikut turutan indeks semasa
+    textElement.innerText = memories[currentIndex].text;
     imgElement.style.opacity = '0';
     
     setTimeout(() => {
-        imgElement.src = memories[randomIndex].image;
+        imgElement.src = memories[currentIndex].image;
         imgElement.style.opacity = '1';
     }, 300);
+
+    // Gerakkan ke gambar seterusnya
+    currentIndex++;
+
+    // Kalau dah sampai hujung gambar (gambar ke-8), susun balik secara rawak dan mula dari 0
+    if (currentIndex >= memories.length) {
+        currentIndex = 0;
+        shuffleMemories();
+    }
 }
 
 // Fungsi animasi hati gugur di background
