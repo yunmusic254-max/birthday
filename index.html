@@ -8,7 +8,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #0b020c !important;
+            background-color: #0b020c;
             color: #fff;
             display: flex;
             justify-content: center;
@@ -35,9 +35,8 @@
             backdrop-filter: blur(10px);
             border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            z-index: 10 !important; /* Paksa kotak duduk paling depan */
+            z-index: 10;
             position: relative;
-            display: block; /* Pastikan ia wujud secara default */
         }
         h1 { font-size: 1.8rem; color: #ff4d6d; margin-bottom: 15px; text-shadow: 0 0 10px rgba(255,77,109,0.3); }
         p { font-size: 1rem; line-height: 1.6; color: #f0e6ef; margin-bottom: 20px; }
@@ -90,19 +89,19 @@
             pointer-events: none; z-index: 2; 
         }
         
-        /* Halaman Interaktif Bunga Api */
+        /* Halaman Interaktif Bunga Api (Dibaiki sistem paparan) */
         #fireworks-screen {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: #050107; z-index: 99; /* Hanya aktif di akhir game */
-            display: none; opacity: 0;
-            transition: opacity 0.8s ease; justify-content: center;
-            align-items: center; cursor: pointer;
+            background: #050107; z-index: 99; 
+            display: none;
+            justify-content: center; align-items: center;
         }
         .fw-instruction {
             position: absolute; top: 40px; width: 100%; text-align: center;
             color: #ff758f; font-size: 1.2rem; font-weight: bold;
             text-shadow: 0 0 10px rgba(255,117,143,0.5);
             pointer-events: none; padding: 0 20px;
+            z-index: 100;
         }
     </style>
 </head>
@@ -155,7 +154,7 @@
         <button id="go-fw-btn" class="btn" style="display: none;" onclick="goToFireworksScreen()">Next Surprise! 🎆</button>
     </div>
 
-    <div id="fireworks-screen" onclick="launchLetterFirework(event)">
+    <div id="fireworks-screen">
         <div class="fw-instruction" id="fw-hint">Tap dekat mana-mana kawasan skrin sekarang! 🤫✨</div>
     </div>
 
