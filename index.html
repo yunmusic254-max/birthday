@@ -3,34 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Special Space ❤️</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Happy Birthday Baby ✨</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #0b020c;
+            color: #fff;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+        #hearts-container {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 1; overflow: hidden;
+        }
+        .heart {
+            position: absolute; color: #ff4d6d; opacity: 0.7;
+            animation: fall linear forwards;
+        }
+        @keyframes fall {
+            to { transform: translateY(105vh); opacity: 0; }
+        }
+        .container {
+            width: 90%; max-width: 450px; padding: 25px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            z-index: 2; transition: opacity 0.8s ease;
+        }
+        h1 { font-size: 1.8rem; color: #ff4d6d; margin-bottom: 15px; text-shadow: 0 0 10px rgba(255,77,109,0.3); }
+        p { font-size: 1rem; line-height: 1.6; color: #f0e6ef; margin-bottom: 20px; }
+        .btn {
+            background: linear-gradient(45deg, #ff4d6d, #ff758f);
+            color: white; border: none; padding: 12px 28px;
+            font-size: 1rem; border-radius: 50px; cursor: pointer;
+            font-weight: bold; transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
+        }
+        .btn:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(255, 77, 109, 0.6); }
+        .love-card img {
+            width: 100%; max-height: 300px; object-fit: cover;
+            border-radius: 15px; margin-bottom: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: opacity 0.3s ease;
+        }
+        
+        /* Gaya Kad Magik */
+        .magic-zone { display: none; opacity: 0; transition: opacity 0.5s ease; }
+        .card-container {
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: 15px; margin: 20px 0; perspective: 1000px;
+        }
+        .magic-card {
+            width: 100%; height: 150px; cursor: pointer;
+            position: relative; transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .magic-card.flipped { transform: rotateY(180deg); }
+        .card-front, .card-back {
+            position: absolute; width: 100%; height: 100%;
+            backface-visibility: hidden; border-radius: 12px;
+            display: flex; justify-content: center; align-items: center;
+            padding: 10px; font-size: 0.9rem; font-weight: bold;
+        }
+        .card-front {
+            background: linear-gradient(135deg, #4a00e0, #8e2de2);
+            border: 2px solid #ff758f; color: #fff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .card-back {
+            background: #250938; border: 2px solid #ff4d6d;
+            color: #ff758f; transform: rotateY(180deg);
+        }
+    </style>
 </head>
 <body>
 
-    <!-- Kontainer untuk Efek Hati Gugur -->
-    <div class="hearts-container" id="hearts-container"></div>
+    <div id="hearts-container"></div>
 
-    <!-- HALAMAN PERTAMA (Intro) -->
-    <div id="intro-screen">
-        <h1 class="main-title">Hey Beautiful, Happy Birthday! ✨</h1>
-        <p class="click-hint">I made something special for you. Click below to open it...</p>
-        <button class="enter-btn" onclick="nextPage()">Open Surprise 🎁</button>
+    <!-- ELEMEN AUDIO UNTUK LAGU -->
+    <audio id="bg-music" loop>
+        <source src="https://files.freemusicarchive.org/storage-tokyo/music/ccCommunity/Kai_Engel/Satin/Kai_Engel_-_04_-_Moonlight_Reprise.mp3" type="audio/mp3">
+    </audio>
+
+    <!-- HALAMAN 1: INTRO (Kesan sentuhan pertama untuk aktifkan lagu) -->
+    <div id="intro-screen" class="container" onclick="startMusic()">
+        <h1>Hey Beautiful, Happy Birthday! ✨</h1>
+        <p>Yun ada buat sesuatu yang istimewa yang dipenuhi dengan memori kita bersama. Sila klik butang di bawah, Baby.</p>
+        <button class="btn" onclick="nextPage(event)">Open Surprise 🎁</button>
     </div>
 
-    <!-- HALAMAN KEDUA (Surprise + Gambar) -->
-    <div id="main-content">
-        <h2>Reasons Why I Love You 🥰</h2>
-        
-        <div class="card">
-            <!-- Ruang Gambar Memori Korang -->
-            <div class="img-container">
-                <img id="love-image" src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=500" alt="Our Memory">
-            </div>
-            
-            <p id="reason-text">Click the button below to see a reason...</p>
-            <button class="enter-btn" onclick="generateReason()">Next Reason ❤️</button>
+    <!-- HALAMAN 2: MEMORI & GAMBAR -->
+    <div id="main-content" class="container" style="display: none; opacity: 0;">
+        <h1>Kenapa Yun Sayang Baby ❤️</h1>
+        <div class="love-card">
+            <img id="love-image" src="photo_6134180195070578679_y.jpg" alt="Memori Kita">
+            <p id="reason-text">Sebab baby selalu tahu macam mana nak buat Yun tersenyum. ☀️</p>
         </div>
+        <button id="next-btn" class="btn" onclick="generateReason()">Next Reason ❤️</button>
+    </div>
+
+    <!-- HALAMAN 3: GAME KAD MAGIK -->
+    <div id="game-screen" class="container magic-zone">
+        <h1>✨ Kad Magik Keberuntungan ✨</h1>
+        <p>Pilih SATU kad magik di bawah untuk tebus hadiah misteri daripada Yun! 🤭</p>
+        <div class="card-container">
+            <div class="magic-card" onclick="flipCard(this, 0)">
+                <div class="card-front">🔮 Card 1</div>
+                <div class="card-back" id="gift-0">Hadiah 1</div>
+            </div>
+            <div class="magic-card" onclick="flipCard(this, 1)">
+                <div class="card-front">🔮 Card 2</div>
+                <div class="card-back" id="gift-1">Hadiah 2</div>
+            </div>
+            <div class="magic-card" onclick="flipCard(this, 2)">
+                <div class="card-front">🔮 Card 3</div>
+                <div class="card-back" id="gift-2">Hadiah 3</div>
+            </div>
+            <div class="magic-card" onclick="flipCard(this, 3)">
+                <div class="card-front">🔮 Card 4</div>
+                <div class="card-back" id="gift-3">Hadiah 4</div>
+            </div>
+        </div>
+        <p id="game-status" style="font-weight: bold; color: #ff758f; white-space: pre-line;"></p>
     </div>
 
     <script src="script.js"></script>
