@@ -187,29 +187,29 @@
 
     <div id="hearts-container"></div>
 
-    <!-- ELEMEN AUDIO -->
     <audio id="bg-music" loop>
         <source src="JVKE, ZVC - made for me (official lyric video) [OVlxbGND20A].mp3" type="audio/mp3">
     </audio>
 
-    <!-- HALAMAN 1: INTRO -->
+    <!-- HALAMAN 1 -->
     <div id="intro-screen" class="container">
         <h1>Hey Beautiful, Happy Birthday! ✨</h1>
         <p>Yun ada buat sesuatu yang istimewa yang dipenuhi dengan memori kita bersama. Sila klik butang di bawah, Baby.</p>
         <button class="btn" onclick="startMusic(); nextPage('intro-screen', 'main-content')">Open Surprise 🎁</button>
     </div>
 
-    <!-- HALAMAN 2: MEMORI & GAMBAR -->
+    <!-- HALAMAN 2: FIX BANTAH GAMBAR MELEKAT -->
     <div id="main-content" class="container" style="display: none; opacity: 0;">
         <h1>Kenapa Yun Sayang Baby ❤️</h1>
         <div class="love-card">
+            <!-- Letak imej asal dulu -->
             <img id="love-image" src="photo_6134180195070578679_y.jpg" alt="Memori Kita">
             <p id="reason-text">Sebab baby selalu tahu macam mana nak buat Yun tersenyum. ☀️</p>
         </div>
         <button id="next-btn" class="btn" onclick="generateReason()">Next Reason ❤️</button>
     </div>
 
-    <!-- HALAMAN 3: GAME KAD MAGIK -->
+    <!-- HALAMAN 3: FIX KAD FLIP SERENTAK -->
     <div id="game-screen" class="container" style="display: none; opacity: 0;">
         <h1>✨ Kad Magik Keberuntungan ✨</h1>
         <p>Pilih SATU kad magik di bawah untuk tebus hadiah misteri daripada Yun! 🤭</p>
@@ -235,27 +235,23 @@
         <button id="go-fw-btn" class="btn" style="display: none;" onclick="openFireworksSkrin()">Next Surprise! 🎆</button>
     </div>
 
-    <!-- HALAMAN 4: SCREEN INTERAKTIF BUNGA API HURUF -->
+    <!-- HALAMAN 4 -->
     <div id="fireworks-screen" onclick="letupkanBungaApiSini(event)">
         <div class="fw-instruction" id="fw-hint">Klik dekat mana-mana kawasan skrin sekarang! 🤫✨</div>
-        
-        <!-- ELEMEN SAMPUL SURAT MISTERI -->
         <div id="gift-envelope" onclick="bukaKotakSuratYun(event)">✉️</div>
         
-        <!-- KOTAK KAD FINAL UCAPAN YUN -->
         <div id="final-card" class="final-letter-box" onclick="event.stopPropagation();">
             <h2>A Message From Yun ❤️</h2>
             <p>
                 Happy Birthday Sayang! 🎂🎉<br><br>
-                Yun nak mintak maaf kalau selama ni Yun jadi boyfriend yang kurang and sometimes annoying buat baby... I am truly sorry. Tapi Yun nak baby tahu yang Yun sentiasa sayang baby sangat-sangat. ❤️<br><br>
+                Yun nak mintak maaf kalau selama ni Yun jadi boyfriend yang kurang and sometimes annoying buat baby... I am truly sorry. Tapi Yun nak baby tahu yang Yun sentiasa sayang baby sangat-sakat. ❤️<br><br>
                 And lastly, <b>GOOD LUCK SPM BABY!</b> Yun tahu baby dah usaha kuat dan Yun sentiasa doakan baby boleh buat yang terbaik nanti! My queen can do this! 👑✨
             </p>
         </div>
     </div>
 
-    <!-- JAVASCRIPT LOGIK SATU FAIL -->
     <script>
-        // --- 1. HUJAN HEART BACKGROUND ---
+        // --- 1. HUJAN HEART ---
         function createHeart() {
             const container = document.getElementById('hearts-container');
             if(!container) return;
@@ -273,14 +269,12 @@
         }
         setInterval(createHeart, 400);
 
-        // --- 2. MUZIK & TUKAR PAGE ---
+        // --- 2. MUZIK & NAVIGASI ---
         let musicStarted = false;
         function startMusic() {
             if (!musicStarted) {
                 const music = document.getElementById('bg-music');
-                if(music) {
-                    music.play().catch(e => console.log("Muzik perlukan interaksi."));
-                }
+                if(music) music.play().catch(e => console.log("Muzik perlukan klik."));
                 musicStarted = true;
             }
         }
@@ -300,19 +294,35 @@
             }
         }
 
-        // --- 3. ALASAN SAYANG ---
+        // --- 3. FIX ALASAN & GAMBAR BERTUKAR ---
+        // Masukkan senarai nama fail gambar Yun dekat sini mengikut urutan alasan!
         const reasons = [
             "Sebab baby selalu tahu macam mana nak buat Yun tersenyum. ☀️",
             "Sebab setiap kali borak dengan baby, rasa tenang sangat hati ni. 🧸",
             "Sebab baby seorang yang penyayang, penyabar walaupun Yun suka merajuk. 🥺",
             "Sebab Yun nampak masa depan Yun ada bersama baby tau! 💍"
         ];
+        
+        // Yun gantikan nama fail gambar dekat bawah ni ikut gambar sebenar dalam repo Yun!
+        const images = [
+            "photo_6134180195070578679_y.jpg", // Gambar alasan 1
+            "photo_6134180195070578679_y.jpg", // Gambar alasan 2 (tukar nama fail kalau ada gambar lain)
+            "photo_6134180195070578679_y.jpg", // Gambar alasan 3
+            "photo_6134180195070578679_y.jpg"  // Gambar alasan 4
+        ];
+        
         let currentReasonIdx = 0;
 
         function generateReason() {
             currentReasonIdx++;
             if (currentReasonIdx < reasons.length) {
                 document.getElementById('reason-text').innerText = reasons[currentReasonIdx];
+                
+                // Kod penukar gambar automatik
+                if(images[currentReasonIdx]) {
+                    document.getElementById('love-image').src = images[currentReasonIdx];
+                }
+                
                 if(currentReasonIdx === reasons.length - 1) {
                     document.getElementById('next-btn').innerText = "Go to Gift Game 🔮";
                 }
@@ -321,7 +331,7 @@
             }
         }
 
-        // --- 4. GAME KAD MAGIK (FIXED MULTI-FLIP) ---
+        // --- 4. FIX SAKAN KAD FLIP SERENTAK ---
         const gifts = [
             "🧸 Hadiah Comel: Teddy Bear Besar untuk peneman tidur Baby!",
             "📞 Denda Comel: Kena Call Yun Sekarang Juga! 😜",
@@ -342,15 +352,15 @@
             if (hasFlipped) return;
             hasFlipped = true;
 
-            // Set isi kandungan untuk semua kad siap-siap
+            // Masukkan teks hadiah ke semua kad siap-siap
             for (let i = 0; i < 4; i++) {
                 document.getElementById(`gift-${i}`).innerText = gifts[i];
             }
 
-            // Pusingkan kad yang ditekan dahulu
+            // Pusingkan HANYA KAD YANG DIKLIK SAHAJA
             cardElement.classList.add('flipped');
 
-            // Pusingkan 3 kad lain secara automatik selepas 600ms
+            // Kad lain hanya akan dipusingkan 1.2 saat KEMUDIAN (Bukan serentak!)
             const allCards = document.querySelectorAll('.magic-card');
             setTimeout(() => {
                 allCards.forEach((c, i) => {
@@ -358,20 +368,17 @@
                         c.classList.add('flipped');
                     }
                 });
-            }, 600);
+            }, 1200);
 
-            // Papar teks kemenangan hadiah
             const status = document.getElementById('game-status');
             status.innerText = "Tahniah Baby! Sila screenshot kad ini dan hantar pada Yun untuk tebus:\n\n\" " + gifts[index] + " \"";
             
-            // Keluarkan butang Next Surprise dengan selamat
             setTimeout(() => {
-                const targetBtn = document.getElementById('go-fw-btn');
-                targetBtn.style.display = 'inline-block';
-            }, 1200);
+                document.getElementById('go-fw-btn').style.display = 'inline-block';
+            }, 2000);
         }
 
-        // --- 5. INTERAKTIF BUNGA API & SURAT ---
+        // --- 5. BUNGA API ---
         const senaraiHuruf = ["H", "A", "P", "P", "Y", "❤️", "B", "I", "R", "T", "H", "D", "A", "Y"];
         let indeksHuruf = 0;
         let mainBungaApiTamat = false;
@@ -444,15 +451,11 @@
 
         function bukaKotakSuratYun(e) {
             if (e) e.stopPropagation();
-            
             const envelope = document.getElementById('gift-envelope');
             const rect = envelope.getBoundingClientRect();
-            
             buatLetupanSparkle(rect.left + rect.width/2, rect.top + rect.height/2);
             envelope.style.display = 'none';
-            
             document.getElementById('fw-hint').innerText = "Happy Birthday Sayang! ❤️🎂";
-            
             setTimeout(() => {
                 document.getElementById('final-card').classList.add('show');
             }, 300);
