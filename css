@@ -1,0 +1,89 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a0813, #2c0c1e);
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* First Page / Intro Screen */
+#intro-screen {
+    text-align: center;
+    transition: opacity 1s ease;
+}
+
+#intro-screen h1 {
+    font-size: 3.5rem;
+    font-weight: 300;
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+    color: #ff75a0;
+    text-shadow: 0 0 15px rgba(255, 117, 160, 0.5);
+}
+
+.enter-btn {
+    background: transparent;
+    border: 2px solid #ff75a0;
+    color: #ff75a0;
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.enter-btn:hover {
+    background: #ff75a0;
+    color: #1a0813;
+    box-shadow: 0 0 20px rgba(255, 117, 160, 0.6);
+}
+
+/* Main Birthday Content */
+#main-content {
+    display: none;
+    text-align: center;
+    max-width: 600px;
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+#main-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    color: #ff75a0;
+}
+
+.subtitle {
+    color: #b3a2b0;
+    margin-bottom: 20px;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 40px 30px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+#reason-text {
+    font-size: 1.3rem;
+    font-style: italic;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
