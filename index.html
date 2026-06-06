@@ -6,11 +6,11 @@
     <title>Happy Birthday Baby ✨</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Poppins', sans-serif; background-color: #0b020c; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; text-align: center; position: relative; overflow: hidden; }
+        body { font-family: 'Poppins', sans-serif; background-color: #0b020c; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; text-align: center; overflow: hidden; }
         #hearts-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 1; }
         .heart { position: absolute; color: #ff4d6d; opacity: 0.7; animation: fall linear forwards; }
         @keyframes fall { to { transform: translateY(105vh); opacity: 0; } }
-        .container { width: 90%; max-width: 450px; padding: 25px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); z-index: 10; transition: opacity 0.5s ease; }
+        .container { width: 90%; max-width: 450px; padding: 25px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); z-index: 10; transition: opacity 0.5s ease; }
         h1 { font-size: 1.8rem; color: #ff4d6d; margin-bottom: 15px; }
         .btn { background: linear-gradient(45deg, #ff4d6d, #ff758f); color: white; border: none; padding: 12px 28px; font-size: 1rem; border-radius: 50px; cursor: pointer; font-weight: bold; margin-top: 15px; }
         .love-card img { width: 100%; max-height: 300px; object-fit: cover; border-radius: 15px; margin-bottom: 15px; border: 2px solid rgba(255, 255, 255, 0.2); }
@@ -32,16 +32,16 @@
     <audio id="bg-music" loop><source src="JVKE, ZVC - made for me (official lyric video) [OVlxbGND20A].mp3" type="audio/mp3"></audio>
 
     <div id="intro-screen" class="container">
-        <h1>Hey Beautiful! ✨</h1>
+        <h1>Hey Beautiful, Happy Birthday! ✨</h1>
         <p>Yun ada surprise untuk Baby.</p>
-        <button class="btn" onclick="startMusic(); nextPage('intro-screen', 'main-content')">Open 🎁</button>
+        <button class="btn" onclick="startMusic(); nextPage('intro-screen', 'main-content')">Open Surprise 🎁</button>
     </div>
 
     <div id="main-content" class="container" style="display: none; opacity: 0;">
         <h1>Kenapa Yun Sayang Baby ❤️</h1>
         <div class="love-card">
             <img id="love-image" src="photo_6134180195070578679_y.jpg">
-            <p id="reason-text">Sebab baby selalu buat Yun tersenyum. ☀️</p>
+            <p id="reason-text">Sebab baby selalu tahu macam mana nak buat Yun tersenyum. ☀️</p>
         </div>
         <button id="next-btn" class="btn" onclick="generateReason()">Next Reason ❤️</button>
     </div>
@@ -54,14 +54,14 @@
             <div class="magic-card" onclick="flipCard(this, 2)"><div class="card-front">🔮 Card 3</div><div class="card-back">🫂 Hadiah: Virtual Big Hug Yang Erat! 🫂</div></div>
             <div class="magic-card" onclick="flipCard(this, 3)"><div class="card-front">🔮 Card 4</div><div class="card-back">✨ Hadiah: Wish Apa-apa Yun Tunaikan! ✨</div></div>
         </div>
-        <p id="game-status"></p>
+        <p id="game-status" style="font-weight: bold; color: #ff758f; margin-bottom: 15px;"></p>
         <button id="go-fw-btn" class="btn" style="display: none;" onclick="nextPage('game-screen', 'fireworks-screen')">Next Surprise! 🎆</button>
     </div>
 
-    <div id="fireworks-screen" onclick="letupkan(event)">
+    <div id="fireworks-screen" onclick="letupkan(event)" style="display: none;">
         <div class="final-letter-box" id="final-card" onclick="event.stopPropagation()">
-            <h2>Message From Yun ❤️</h2>
-            <p>Happy Birthday Sayang! Good luck SPM, Yun sentiasa ada untuk Baby! 👑</p>
+            <h2>A Message From Yun ❤️</h2>
+            <p>Happy Birthday Sayang! 🎂🎉<br><br>Good luck SPM! Yun sentiasa doakan baby buat yang terbaik. Love you! 👑✨</p>
         </div>
     </div>
 
@@ -71,15 +71,17 @@
         function nextPage(c, n) { document.getElementById(c).style.opacity = '0'; setTimeout(() => { document.getElementById(c).style.display = 'none'; document.getElementById(n).style.display = 'block'; setTimeout(() => document.getElementById(n).style.opacity = '1', 50); }, 500); }
         function startMusic() { document.getElementById('bg-music').play(); }
         
-        const reasons = ["Sebab baby selalu buat Yun tersenyum. ☀️", "Sebab setiap kali borak rasa tenang. 🧸", "Sebab baby penyabar walaupun Yun merajuk. 🥺", "Sebab Yun nampak masa depan bersama baby! 💍"];
+        const reasons = ["Sebab baby selalu tahu macam mana nak buat Yun tersenyum. ☀️", "Sebab setiap kali borak dengan baby, rasa tenang sangat hati ni. 🧸", "Sebab baby seorang yang penyayang, penyabar walaupun Yun suka merajuk. 🥺", "Sebab Yun nampak masa depan Yun ada bersama baby tau! 💍"];
         const images = ["photo_6134180195070578679_y.jpg", "photo_6134180195070578680_y.jpg", "photo_6134180195070578684_y.jpg", "photo_6134180195070578685_y.jpg"];
         let idx = 0;
         function generateReason() { idx++; if(idx < reasons.length) { document.getElementById('reason-text').innerText = reasons[idx]; document.getElementById('love-image').src = images[idx]; if(idx === 3) document.getElementById('next-btn').innerText = "Go to Gift Game 🔮"; } else nextPage('main-content', 'game-screen'); }
         
         let hasFlipped = false;
-        function flipCard(el, i) { if(hasFlipped) return; hasFlipped = true; el.classList.add('flipped'); document.getElementById('game-status').innerText = "Dapat: " + el.querySelector('.card-back').innerText; document.getElementById('go-fw-btn').style.display = 'inline-block'; }
+        function flipCard(el, i) { if(hasFlipped) return; hasFlipped = true; el.classList.add('flipped'); document.getElementById('game-status').innerText = "Tahniah! " + el.querySelector('.card-back').innerText; document.getElementById('go-fw-btn').style.display = 'inline-block'; }
         
-        function letupkan(e) { document.getElementById('final-card').classList.add('show'); }
+        const letters = ["H", "A", "P", "P", "Y", "B", "I", "R", "T", "H", "D", "A", "Y"];
+        let lIdx = 0;
+        function letupkan(e) { if(lIdx < letters.length) { const l = document.createElement('div'); l.classList.add('fw-letter'); l.innerText = letters[lIdx++]; l.style.left = e.clientX + 'px'; l.style.top = e.clientY + 'px'; document.getElementById('fireworks-screen').appendChild(l); setTimeout(() => l.remove(), 1000); } else { document.getElementById('final-card').classList.add('show'); } }
     </script>
 </body>
 </html>
