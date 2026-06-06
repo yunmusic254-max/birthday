@@ -1,20 +1,36 @@
-// MASUKKAN SEMUA GAMBAR & AYAT ANDA DI SINI
+// SENARAI GAMBAR & AYAT MANIS (BABY & YUN EDITION)
 const memories = [
     {
-        text: "Sebab awak selalu tahu macam mana nak buat saya tersenyum. ☀️",
-        image: "photo_6134180195070578679_y.jpg" // Gambar 1
+        text: "Sebab baby selalu tahu macam mana nak buat Yun tersenyum. ☀️",
+        image: "photo_6134180195070578679_y.jpg"
     },
     {
-        text: "Sebab awak ada hati yang paling baik dan penyayang. ✨",
-        image: "MASUKKAN_NAMA_FAIL_GAMBAR_KEDUA_DI_SINI.jpg" // Gambar 2
+        text: "Sebab baby ada hati yang paling baik dan penyayang dalam dunia ni. ✨",
+        image: "photo_6134180195070578695_y.jpg"
     },
     {
-        text: "Saya rasa sangat selamat, tenang dan gembira bila ada di sebelah awak. 🥰",
-        image: "MASUKKAN_NAMA_FAIL_GAMBAR_KETIGA_DI_SINI.jpg" // Gambar 3
+        text: "Yun rasa sangat selamat, tenang dan gembira bila ada di sebelah baby. 🥰",
+        image: "photo_6134180195070578693_y.jpg"
     },
     {
-        text: "Gelak tawa awak adalah bunyi yang paling saya suka dengar dalam dunia ni. 🎶",
-        image: "MASUKKAN_NAMA_FAIL_GAMBAR_KEEMPAT_DI_SINI.jpg" // Gambar 4
+        text: "Setiap hari yang dilalui bersama baby adalah hari yang paling indah buat Yun. 🌹",
+        image: "photo_6134180195070578692_y.jpg"
+    },
+    {
+        text: "Terima kasih sebab sudi jadi sebahagian daripada cerita hidup Yun. ❤️",
+        image: "photo_6134180195070578686_y.jpg"
+    },
+    {
+        text: "Yun sentiasa hargai setiap saat, gelak tawa, dan memori yang kita kongsi bersama. ✨",
+        image: "photo_6134180195070578685_y.jpg"
+    },
+    {
+        text: "Walau apa pun yang terjadi, baby akan sentiasa ada tempat yang istimewa dalam hati Yun. 💖",
+        image: "photo_6134180195070578684_y.jpg"
+    },
+    {
+        text: "Semoga panjang umur, murah rezeki, dan impian baby semuanya tercapai. Happy Birthday, sayang! 🎂🎉",
+        image: "photo_6134180195070578680_y.jpg"
     }
 ];
 
@@ -32,6 +48,8 @@ function nextPage() {
 function generateReason() {
     const textElement = document.getElementById('reason-text');
     const imgElement = document.getElementById('love-image');
+    
+    // Pilih memori secara rawak dari senarai di atas
     const randomIndex = Math.floor(Math.random() * memories.length);
     
     textElement.innerText = memories[randomIndex].text;
@@ -43,15 +61,18 @@ function generateReason() {
     }, 300);
 }
 
+// Fungsi animasi hati gugur di background
 function createHeart() {
     const container = document.getElementById('hearts-container');
     if (!container) return;
+    
     const heart = document.createElement('div');
     heart.classList.add('heart');
     heart.innerHTML = '❤️';
     heart.style.left = Math.random() * 100 + 'vw';
     heart.style.animationDuration = Math.random() * 3 + 2 + 's';
     heart.style.fontSize = Math.random() * 15 + 15 + 'px';
+    
     container.appendChild(heart);
     setTimeout(() => heart.remove(), 5000);
 }
