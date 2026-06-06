@@ -191,14 +191,12 @@
         <source src="JVKE, ZVC - made for me (official lyric video) [OVlxbGND20A].mp3" type="audio/mp3">
     </audio>
 
-    <!-- HALAMAN 1 -->
     <div id="intro-screen" class="container">
         <h1>Hey Beautiful, Happy Birthday! ✨</h1>
         <p>Yun ada buat sesuatu yang istimewa yang dipenuhi dengan memori kita bersama. Sila klik butang di bawah, Baby.</p>
         <button class="btn" onclick="startMusic(); nextPage('intro-screen', 'main-content')">Open Surprise 🎁</button>
     </div>
 
-    <!-- HALAMAN 2 -->
     <div id="main-content" class="container" style="display: none; opacity: 0;">
         <h1>Kenapa Yun Sayang Baby ❤️</h1>
         <div class="love-card">
@@ -208,7 +206,6 @@
         <button id="next-btn" class="btn" onclick="generateReason()">Next Reason ❤️</button>
     </div>
 
-    <!-- HALAMAN 3 -->
     <div id="game-screen" class="container" style="display: none; opacity: 0;">
         <h1>✨ Kad Magik Keberuntungan ✨</h1>
         <p>Pilih SATU kad magik di bawah untuk tebus hadiah misteri daripada Yun! 🤭</p>
@@ -234,7 +231,6 @@
         <button id="go-fw-btn" class="btn" style="display: none;" onclick="openFireworksSkrin()">Next Surprise! 🎆</button>
     </div>
 
-    <!-- HALAMAN 4 -->
     <div id="fireworks-screen" onclick="letupkanBungaApiSini(event)">
         <div class="fw-instruction" id="fw-hint">Klik dekat mana-mana kawasan skrin sekarang! 🤫✨</div>
         <div id="gift-envelope" onclick="bukaKotakSuratYun(event)">✉️</div>
@@ -273,7 +269,7 @@
         function startMusic() {
             if (!musicStarted) {
                 const music = document.getElementById('bg-music');
-                if(music) music.play().catch(e => console.log("Muzik perlukan klik."));
+                if(music) music.play().catch(e => console.log("Muzik perlukan interaksi."));
                 musicStarted = true;
             }
         }
@@ -293,7 +289,7 @@
             }
         }
 
-        // --- 3. ALASAN & PAKSA TUKAR GAMBAR KELUAR ---
+        // --- 3. SISTEM TUKAR ALASAN & GAMBAR FRESH ---
         const reasons = [
             "Sebab baby selalu tahu macam mana nak buat Yun tersenyum. ☀️",
             "Sebab setiap kali borak dengan baby, rasa tenang sangat hati ni. 🧸",
@@ -301,12 +297,12 @@
             "Sebab Yun nampak masa depan Yun ada bersama baby tau! 💍"
         ];
         
-        // Letak ?v=1, ?v=2 untuk paksa sistem panggil fail secara segar dari pelayan
+        // Letak penanda dinamik (?v=) supaya pelayan hantar imej bersih tanpa cache melekat
         const images = [
-            "photo_6134180195070578679_y.jpg?v=1", 
-            "photo_6134180195070578679_y.jpg?v=2", 
-            "photo_6134180195070578679_y.jpg?v=3", 
-            "photo_6134180195070578679_y.jpg?v=4"
+            "photo_6134180195070578679_y.jpg?v=101", 
+            "photo_6134180195070578679_y.jpg?v=102", 
+            "photo_6134180195070578679_y.jpg?v=103", 
+            "photo_6134180195070578679_y.jpg?v=104"
         ];
         
         let currentReasonIdx = 0;
@@ -326,7 +322,7 @@
             }
         }
 
-        // --- 4. GAME KAD (KOD BARU BERASINGAN) ---
+        // --- 4. GAME KAD (C BESAR - FIX TYPO KAD BERPUSING SERENTAK) ---
         const gifts = [
             "🧸 Hadiah Comel: Teddy Bear Besar untuk peneman tidur Baby!",
             "📞 Denda Comel: Kena Call Yun Sekarang Juga! 😜",
@@ -351,10 +347,10 @@
                 document.getElementById(`gift-${i}`).innerText = gifts[i];
             }
 
-            // Pusing kad terpilih sahaja
+            // Pusingkan satu kad yang diklik dahulu
             cardElement.classList.add('flipped');
 
-            // Kad lain tunggu 1.5 saat baru pusing
+            // Kad selebihnya hanya akan dibuka selepas kelewatan 1.5 saat
             const allCards = document.querySelectorAll('.magic-card');
             setTimeout(() => {
                 allCards.forEach((c, i) => {
@@ -368,7 +364,7 @@
             status.innerText = "Tahniah Baby! Sila screenshot kad ini dan hantar pada Yun untuk tebus:\n\n\" " + gifts[index] + " \"";
             
             setTimeout(() => {
-                document.getElementById('go-fw-btn').style.style.display = 'inline-block';
+                document.getElementById('go-fw-btn').style.display = 'inline-block';
             }, 2200);
         }
 
