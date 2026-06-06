@@ -81,24 +81,21 @@
             color: #ff758f; transform: rotateY(180deg);
         }
 
-        /* HALAMAN IMERSIF BUNGA API BARU (Kalis Gelap) */
+        /* SCREEN INTERAKTIF BUNGA API (Dibaiki sepenuhnya) */
         #fireworks-screen {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background-color: #050107 !important; 
-            z-index: 999; 
+            background: #050107; z-index: 9999; 
             display: none;
-            overflow: hidden;
-            touch-action: none;
         }
         .fw-instruction {
             position: absolute; top: 40px; width: 100%; text-align: center;
             color: #ff758f; font-size: 1.2rem; font-weight: bold;
             text-shadow: 0 0 10px rgba(255,117,143,0.5);
             pointer-events: none; padding: 0 20px;
-            z-index: 1000;
+            z-index: 10000;
         }
 
-        /* Animasi Letupan Huruf */
+        /* Tulisan Letupan Huruf */
         .fw-letter {
             position: absolute;
             font-size: 3.5rem;
@@ -106,83 +103,7 @@
             color: #ff4d6d;
             text-shadow: 0 0 20px #ff758f, 0 0 30px #ff4d6d;
             transform: translate(-50%, -50%) scale(0);
-            animation: popOut 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation: popOut 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
             pointer-events: none;
+            z-index: 99999;
         }
-        @keyframes popOut {
-            0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
-            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
-            100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
-        }
-
-        /* Animasi Percikan Sparkle */
-        .sparkle {
-            position: absolute;
-            width: 6px; height: 6px;
-            background-color: #ffd166;
-            border-radius: 50%;
-            pointer-events: none;
-            box-shadow: 0 0 10px #ffd166;
-            animation: explode 0.8s ease-out forwards;
-        }
-        @keyframes explode {
-            0% { transform: translate(-50%, -50%) translate(0, 0); opacity: 1; }
-            100% { transform: translate(-50%, -50%) translate(var(--mx), var(--my)); opacity: 0; }
-        }
-    </style>
-</head>
-<body>
-
-    <div id="hearts-container"></div>
-
-    <audio id="bg-music" loop>
-        <source src="JVKE, ZVC - made for me (official lyric video) [OVlxbGND20A].mp3" type="audio/mp3">
-    </audio>
-
-    <div id="intro-screen" class="container" onclick="startMusic()">
-        <h1>Hey Beautiful, Happy Birthday! ✨</h1>
-        <p>Yun ada buat sesuatu yang istimewa yang dipenuhi dengan memori kita bersama. Sila klik butang di bawah, Baby.</p>
-        <button class="btn" onclick="nextPage(event)">Open Surprise 🎁</button>
-    </div>
-
-    <div id="main-content" class="container" style="display: none; opacity: 0;">
-        <h1>Kenapa Yun Sayang Baby ❤️</h1>
-        <div class="love-card">
-            <img id="love-image" src="photo_6134180195070578679_y.jpg" alt="Memori Kita">
-            <p id="reason-text">Sebab baby selalu tahu macam mana nak buat Yun tersenyum. ☀️</p>
-        </div>
-        <button id="next-btn" class="btn" onclick="generateReason()">Next Reason ❤️</button>
-    </div>
-
-    <div id="game-screen" class="container magic-zone">
-        <h1>✨ Kad Magik Keberuntungan ✨</h1>
-        <p>Pilih SATU kad magik di bawah untuk tebus hadiah misteri daripada Yun! 🤭</p>
-        <div class="card-container">
-            <div class="magic-card" onclick="flipCard(this, 0)">
-                <div class="card-front">🔮 Card 1</div>
-                <div class="card-back" id="gift-0">Hadiah 1</div>
-            </div>
-            <div class="magic-card" onclick="flipCard(this, 1)">
-                <div class="card-front">🔮 Card 2</div>
-                <div class="card-back" id="gift-1">Hadiah 2</div>
-            </div>
-            <div class="magic-card" onclick="flipCard(this, 2)">
-                <div class="card-front">🔮 Card 3</div>
-                <div class="card-back" id="gift-2">Hadiah 3</div>
-            </div>
-            <div class="magic-card" onclick="flipCard(this, 3)">
-                <div class="card-front">🔮 Card 4</div>
-                <div class="card-back" id="gift-3">Hadiah 4</div>
-            </div>
-        </div>
-        <p id="game-status" style="font-weight: bold; color: #ff758f; white-space: pre-line; margin-bottom: 15px;"></p>
-        <button id="go-fw-btn" class="btn" style="display: none;" onclick="goToFireworksScreen()">Next Surprise! 🎆</button>
-    </div>
-
-    <div id="fireworks-screen">
-        <div class="fw-instruction" id="fw-hint">Tap dekat mana-mana kawasan skrin sekarang! 🤫✨</div>
-    </div>
-
-    <script src="script.js"></script>
-</body>
-</html>
