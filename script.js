@@ -19,7 +19,106 @@ const luckyGifts = [
 let currentIndex = 0;
 let hasSelectedCard = false;
 
-// Fungsi panggil lagu untuk start play
+// Sistem Tembakan Huruf Bunga Api
+const birthdayLetters = ["H", "A", "P", "P", "Y", "B", "I", "R", "T", "H", "D", "A", "Y"];
+let letterIndex = 0;
+
+// Setup Canvas Bunga Api
+const canvas = document.getElementById('fwCanvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+class Particle {
+    constructor(x, y, color, angle, speed, isGlitter = false, letter = '') {
+        this.x = x; this.y = y; this.color = color;
+        this.angle = angle;
+        this.speed = speed;
+        this.friction = isGlitter ? 0.98 : 0.95;
+        this.gravity = isGlitter ? 0.05 : 0.12;
+        this.vx = Math.cos(angle) * speed;
+        this.vy = Math.sin(angle) * speed;
+        this.alpha = 1;
+        this.decay = isGlitter ? 0.008 : 0.015;
+        this.isGlitter = isGlitter;
+        this.letter = letter;
+    }
+    update() {
+        this.vx *= this.friction;
+        this.vy *= this.friction;
+        this.vy += this.gravity;
+        this.x += this.vx;
+        this.y += this.vy;
+        this.alpha -= this.decay;
+    }
+    draw() {
+        ctx.save();
+        ctx.globalAlpha = this.alpha;
+        if (this.letter) {
+            ctx.font = 'bold 45px Poppins';
+            ctx.fillStyle = '#ff758f';
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = '#ff4d6d';
+            ctx.fillText(this.letter, this.x, this.y);
+        } else {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.isGlitter ? Math.random() * 2 + 1 : 4, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            if (this.isGlitter) {
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = '#fff';
+            }
+            ctx.fill();
+        }
+        ctx.restore();
+    }
+}
+
+function animateFireworks() {
+    ctx.fillStyle = 'rgba(11, 2, 12, 0.2)'; // Efek trail pudar ringkas
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    for (let i = particles.length - 1; i >= 0; i--) {
+        particles[i].update();
+        if (particles[i].alpha <= 0) {
+            particles.splice(i, 1);
+        } else {
+            particles[i].draw();
+        }
+    }
+    requestAnimationFrame(animateFireworks);
+}
+animateFireworks();
+
+// Bunga Api Bentuk Hati -> Meletup jadi Glitter
+function createHeartFirework(targetX, targetY) {
+    const totalPoints = 80;
+    const color = `hsl(${Math.random() * 30 + 340}, 100%, 65%)`; // Warna pink/merah cinta
+    
+    for (let i = 0; i < totalPoints; i++) {
+        const t = (i / totalPoints) * Math.PI * 2;
+        // Formula Matematik untuk Bentuk Hati ❤️
+        const xOffset = 16 * Math.pow(Math.sin(t), 3);
+        const yOffset = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
+        
+        const angle = Math.atan2(yOffset, xOffset);
+        const speed = Math.sqrt(xOffset * xOffset + yOffset * yOffset) * 0.4;
+        
+        particles.push(new Particle(targetX, targetY, color, angle, speed, false));
+        
+        // Tambah glitter berkilauan di sekeliling letupan hati
+        if (i % 2 === 0) {
+            particles.push(new Particle(targetX, targetY, '#fff', angle + (Math.random() - 0.5), speed * 0.8, true));
+        }
+    }
+}
+
 function startMusic() {
     const music = document.getElementById('bg-music');
     if (music && music.paused) {
@@ -29,9 +128,7 @@ function startMusic() {
 
 function nextPage(event) {
     if (event) event.stopPropagation(); 
-    
     startMusic(); 
-
     document.getElementById('intro-screen').style.opacity = '0';
     setTimeout(() => {
         document.getElementById('intro-screen').style.display = 'none';
@@ -44,17 +141,13 @@ function nextPage(event) {
 function generateReason() {
     const textElement = document.getElementById('reason-text');
     const imgElement = document.getElementById('love-image');
-    
     currentIndex++;
-
     if (currentIndex >= memories.length) {
         goToGameScreen();
         return;
     }
-
     textElement.innerText = memories[currentIndex].text;
     imgElement.style.opacity = '0';
-    
     setTimeout(() => {
         imgElement.src = memories[currentIndex].image;
         imgElement.style.opacity = '1';
@@ -78,12 +171,59 @@ function goToGameScreen() {
 
 function flipCard(cardElement, index) {
     if (hasSelectedCard) return;
-    
     cardElement.classList.add('flipped');
     hasSelectedCard = true;
     
+    // Letupkan Bunga Api Hati + Glitter serta merta!
+    const rect = cardElement.getBoundingClientRect();
+    createHeartFirework(rect.left + rect.width/2, rect.top + rect.height/2);
+    
     const chosenGift = document.getElementById(`gift-${index}`).innerText;
     document.getElementById('game-status').innerText = `Tahniah Baby! Sila screenshot kad ini dan hantar pada Yun untuk tebus: \n\n "${chosenGift}"`;
+    
+    // Tunjukkan butang ke halaman bunga api huruf selepas 2 saat
+    setTimeout(() => {
+        document.getElementById('go-fw-btn').style.display = 'inline-block';
+    }, 2000);
+}
+
+function goToFireworksScreen() {
+    // Alihkan canvas ke atas skrin penuh
+    document.getElementById('fwCanvas').style.pointerEvents = 'auto';
+    document.getElementById('fwCanvas').style.zIndex = '5';
+    
+    const fwScreen = document.getElementById('fireworks-screen');
+    fwScreen.style.display = 'flex';
+    setTimeout(() => fwScreen.style.opacity = '1', 50);
+}
+
+// Fungsi Tembakan Bunga Api Mengikut Huruf Satu Demi Satu
+function launchLetterFirework(event) {
+    if (letterIndex >= birthdayLetters.length) {
+        document.getElementById('fw-hint').innerText = "Happy Birthday Sekali Lagi Sayang! I Love You So Much ❤️✨";
+        createHeartFirework(event.clientX, event.clientY);
+        return;
+    }
+
+    const currentLetter = birthdayLetters[letterIndex];
+    letterIndex++;
+
+    // Keluarkan huruf utama di tempat klik
+    particles.push(new Particle(event.clientX, event.clientY, '#ff758f', 0, 0, false, currentLetter));
+
+    // Letupkan serpihan glitter sekeliling huruf tu
+    for (let i = 0; i < 30; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 4 + 2;
+        particles.push(new Particle(event.clientX, event.clientY, '#ffd166', angle, speed, true));
+    }
+
+    // Kemas kini pembayang arahan skrin
+    if (letterIndex < birthdayLetters.length) {
+        document.getElementById('fw-hint').innerText = `Tap lagi, jom habiskan! (Huruf seterusnya...) ✨`;
+    } else {
+        document.getElementById('fw-hint').innerText = "Yayyy! Selesai! Selamat Hari Jadi Sayang! ❤️🎂 (Tap untuk letupan bonus!)";
+    }
 }
 
 function createHeart() {
