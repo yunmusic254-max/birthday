@@ -321,7 +321,7 @@
             }
         }
 
-        // --- 4. GAME KAD MAGIK ---
+        // --- 4. GAME KAD MAGIK (FIXED MULTI-FLIP) ---
         const gifts = [
             "🧸 Hadiah Comel: Teddy Bear Besar untuk peneman tidur Baby!",
             "📞 Denda Comel: Kena Call Yun Sekarang Juga! 😜",
@@ -342,26 +342,32 @@
             if (hasFlipped) return;
             hasFlipped = true;
 
-            document.getElementById(`gift-${index}`).innerText = gifts[index];
-            cardElement.classList.add('flipped');
-
-            let remainingIdx = 0;
+            // Set isi kandungan untuk semua kad siap-siap
             for (let i = 0; i < 4; i++) {
-                if (i !== index) {
-                    document.getElementById(`gift-${i}`).innerText = gifts[i];
-                    const remainingCards = document.querySelectorAll('.magic-card');
-                    setTimeout(() => {
-                        remainingCards[i].classList.add('flipped');
-                    }, 600);
-                }
+                document.getElementById(`gift-${i}`).innerText = gifts[i];
             }
 
+            // Pusingkan kad yang ditekan dahulu
+            cardElement.classList.add('flipped');
+
+            // Pusingkan 3 kad lain secara automatik selepas 600ms
+            const allCards = document.querySelectorAll('.magic-card');
+            setTimeout(() => {
+                allCards.forEach((c, i) => {
+                    if (i !== index) {
+                        c.classList.add('flipped');
+                    }
+                });
+            }, 600);
+
+            // Papar teks kemenangan hadiah
             const status = document.getElementById('game-status');
             status.innerText = "Tahniah Baby! Sila screenshot kad ini dan hantar pada Yun untuk tebus:\n\n\" " + gifts[index] + " \"";
             
+            // Keluarkan butang Next Surprise dengan selamat
             setTimeout(() => {
-                document.getElementById('go-fw-btn').style.style.display = 'inline-block';
-                document.getElementById('go-fw-btn').style.setProperty('display', 'inline-block', 'important');
+                const targetBtn = document.getElementById('go-fw-btn');
+                targetBtn.style.display = 'inline-block';
             }, 1200);
         }
 
