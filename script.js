@@ -18,22 +18,33 @@ const luckyGifts = [
 
 let currentIndex = 0;
 let hasSelectedCard = false;
-
-// Sistem Tembakan Huruf Bunga Api
 const birthdayLetters = ["H", "A", "P", "P", "Y", "B", "I", "R", "T", "H", "D", "A", "Y"];
 let letterIndex = 0;
-
-// Setup Canvas Bunga Api
-const canvas = document.getElementById('fwCanvas');
-const ctx = canvas.getContext('2d');
 let particles = [];
 
+// Elemen Canvas diglobalkan dengan selamat
+let canvas, ctx;
+
+window.addEventListener('DOMContentLoaded', () => {
+    try {
+        canvas = document.getElementById('fwCanvas');
+        if(canvas) {
+            ctx = canvas.getContext('2d');
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            animateFireworks();
+        }
+    } catch(err) {
+        console.log("Canvas error disekat bagi mengelakkan skrin gelap:", err);
+    }
+});
+
 function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    if(canvas) {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
 }
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
 
 class Particle {
     constructor(x, y, color, angle, speed, isGlitter = false, letter = '') {
@@ -58,6 +69,7 @@ class Particle {
         this.alpha -= this.decay;
     }
     draw() {
+        if(!ctx) return;
         ctx.save();
         ctx.globalAlpha = this.alpha;
         if (this.letter) {
@@ -81,6 +93,7 @@ class Particle {
 }
 
 function animateFireworks() {
+    if(!ctx || !canvas) return;
     ctx.fillStyle = 'rgba(11, 2, 12, 0.2)'; 
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
@@ -94,7 +107,6 @@ function animateFireworks() {
     }
     requestAnimationFrame(animateFireworks);
 }
-animateFireworks();
 
 function createHeartFirework(targetX, targetY) {
     const totalPoints = 80;
@@ -109,7 +121,6 @@ function createHeartFirework(targetX, targetY) {
         const speed = Math.sqrt(xOffset * xOffset + yOffset * yOffset) * 0.4;
         
         particles.push(new Particle(targetX, targetY, color, angle, speed, false));
-        
         if (i % 2 === 0) {
             particles.push(new Particle(targetX, targetY, '#fff', angle + (Math.random() - 0.5), speed * 0.8, true));
         }
@@ -183,9 +194,10 @@ function flipCard(cardElement, index) {
 }
 
 function goToFireworksScreen() {
-    document.getElementById('fwCanvas').style.pointerEvents = 'auto';
-    document.getElementById('fwCanvas').style.zIndex = '5';
-    
+    if(canvas) {
+        canvas.style.pointerEvents = 'auto';
+        canvas.style.zIndex = '5';
+    }
     const fwScreen = document.getElementById('fireworks-screen');
     fwScreen.style.display = 'flex';
     setTimeout(() => fwScreen.style.opacity = '1', 50);
