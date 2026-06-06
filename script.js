@@ -81,7 +81,7 @@ class Particle {
 }
 
 function animateFireworks() {
-    ctx.fillStyle = 'rgba(11, 2, 12, 0.2)'; // Efek trail pudar ringkas
+    ctx.fillStyle = 'rgba(11, 2, 12, 0.2)'; 
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
     for (let i = particles.length - 1; i >= 0; i--) {
@@ -96,14 +96,12 @@ function animateFireworks() {
 }
 animateFireworks();
 
-// Bunga Api Bentuk Hati -> Meletup jadi Glitter
 function createHeartFirework(targetX, targetY) {
     const totalPoints = 80;
-    const color = `hsl(${Math.random() * 30 + 340}, 100%, 65%)`; // Warna pink/merah cinta
+    const color = `hsl(${Math.random() * 30 + 340}, 100%, 65%)`; 
     
     for (let i = 0; i < totalPoints; i++) {
         const t = (i / totalPoints) * Math.PI * 2;
-        // Formula Matematik untuk Bentuk Hati ❤️
         const xOffset = 16 * Math.pow(Math.sin(t), 3);
         const yOffset = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
         
@@ -112,7 +110,6 @@ function createHeartFirework(targetX, targetY) {
         
         particles.push(new Particle(targetX, targetY, color, angle, speed, false));
         
-        // Tambah glitter berkilauan di sekeliling letupan hati
         if (i % 2 === 0) {
             particles.push(new Particle(targetX, targetY, '#fff', angle + (Math.random() - 0.5), speed * 0.8, true));
         }
@@ -174,21 +171,18 @@ function flipCard(cardElement, index) {
     cardElement.classList.add('flipped');
     hasSelectedCard = true;
     
-    // Letupkan Bunga Api Hati + Glitter serta merta!
     const rect = cardElement.getBoundingClientRect();
     createHeartFirework(rect.left + rect.width/2, rect.top + rect.height/2);
     
     const chosenGift = document.getElementById(`gift-${index}`).innerText;
     document.getElementById('game-status').innerText = `Tahniah Baby! Sila screenshot kad ini dan hantar pada Yun untuk tebus: \n\n "${chosenGift}"`;
     
-    // Tunjukkan butang ke halaman bunga api huruf selepas 2 saat
     setTimeout(() => {
         document.getElementById('go-fw-btn').style.display = 'inline-block';
     }, 2000);
 }
 
 function goToFireworksScreen() {
-    // Alihkan canvas ke atas skrin penuh
     document.getElementById('fwCanvas').style.pointerEvents = 'auto';
     document.getElementById('fwCanvas').style.zIndex = '5';
     
@@ -197,7 +191,6 @@ function goToFireworksScreen() {
     setTimeout(() => fwScreen.style.opacity = '1', 50);
 }
 
-// Fungsi Tembakan Bunga Api Mengikut Huruf Satu Demi Satu
 function launchLetterFirework(event) {
     if (letterIndex >= birthdayLetters.length) {
         document.getElementById('fw-hint').innerText = "Happy Birthday Sekali Lagi Sayang! I Love You So Much ❤️✨";
@@ -208,17 +201,14 @@ function launchLetterFirework(event) {
     const currentLetter = birthdayLetters[letterIndex];
     letterIndex++;
 
-    // Keluarkan huruf utama di tempat klik
     particles.push(new Particle(event.clientX, event.clientY, '#ff758f', 0, 0, false, currentLetter));
 
-    // Letupkan serpihan glitter sekeliling huruf tu
     for (let i = 0; i < 30; i++) {
         const angle = Math.random() * Math.PI * 2;
         const speed = Math.random() * 4 + 2;
         particles.push(new Particle(event.clientX, event.clientY, '#ffd166', angle, speed, true));
     }
 
-    // Kemas kini pembayang arahan skrin
     if (letterIndex < birthdayLetters.length) {
         document.getElementById('fw-hint').innerText = `Tap lagi, jom habiskan! (Huruf seterusnya...) ✨`;
     } else {
