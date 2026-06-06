@@ -15,26 +15,25 @@
         .btn { background: linear-gradient(45deg, #ff4d6d, #ff758f); color: white; border: none; padding: 12px 28px; font-size: 1rem; border-radius: 50px; cursor: pointer; font-weight: bold; margin-top: 15px; }
         .love-card img { width: 100%; max-height: 300px; object-fit: cover; border-radius: 15px; margin-bottom: 15px; border: 2px solid rgba(255, 255, 255, 0.2); }
         .card-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 20px 0; perspective: 1000px; }
-        .magic-card { width: 100%; height: 140px; cursor: pointer; position: relative; transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .magic-card { width: 100%; height: 140px; cursor: pointer; position: relative; transform-style: preserve-3d; transition: transform 0.6s; }
         .magic-card.flipped { transform: rotateY(180deg); }
         .card-front, .card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 12px; display: flex; justify-content: center; align-items: center; padding: 10px; font-size: 0.9rem; font-weight: bold; }
         .card-front { background: linear-gradient(135deg, #4a00e0, #8e2de2); border: 2px solid #ff758f; }
         .card-back { background: #250938; border: 2px solid #ff4d6d; color: #ff758f; transform: rotateY(180deg); }
         #fireworks-screen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #050107; z-index: 99999; display: none; cursor: pointer; }
-        .fw-letter { position: absolute; font-size: 4rem; color: #ff4d6d; transform: translate(-50%, -50%); pointer-events: none; z-index: 999999; animation: pop 0.8s forwards; }
-        @keyframes pop { 0% { transform: translate(-50%, -50%) scale(0); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 0; } }
-        .final-letter-box { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); width: 85%; max-width: 400px; background: #1a0626; border: 2px solid #ff4d6d; padding: 25px; border-radius: 20px; transition: all 0.5s; opacity: 0; }
+        #gift-envelope { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 5rem; cursor: pointer; z-index: 100000; display: none; }
+        .fw-letter { position: absolute; font-size: 4rem; color: #ff4d6d; pointer-events: none; z-index: 999999; animation: pop 0.8s forwards; }
+        @keyframes pop { 0% { transform: scale(0); opacity: 1; } 100% { transform: scale(1.5); opacity: 0; } }
+        .final-letter-box { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); width: 85%; max-width: 400px; background: #1a0626; border: 2px solid #ff4d6d; padding: 25px; border-radius: 20px; opacity: 0; transition: all 0.5s; z-index: 100001; }
         .final-letter-box.show { transform: translate(-50%, -50%) scale(1); opacity: 1; }
     </style>
 </head>
 <body>
     <div id="hearts-container"></div>
-    <audio id="bg-music" loop><source src="JVKE, ZVC - made for me (official lyric video) [OVlxbGND20A].mp3" type="audio/mp3"></audio>
-
     <div id="intro-screen" class="container">
-        <h1>Hey Beautiful, Happy Birthday! ✨</h1>
+        <h1>Hey Beautiful! ✨</h1>
         <p>Yun ada surprise untuk Baby.</p>
-        <button class="btn" onclick="startMusic(); nextPage('intro-screen', 'main-content')">Open Surprise 🎁</button>
+        <button class="btn" onclick="nextPage('intro-screen', 'main-content')">Open Surprise 🎁</button>
     </div>
 
     <div id="main-content" class="container" style="display: none; opacity: 0;">
@@ -49,19 +48,22 @@
     <div id="game-screen" class="container" style="display: none; opacity: 0;">
         <h1>✨ Kad Magik ✨</h1>
         <div class="card-container">
-            <div class="magic-card" onclick="flipCard(this, 0)"><div class="card-front">🔮 Card 1</div><div class="card-back">📞 Hadiah: Call Yun Sekarang! 📱</div></div>
-            <div class="magic-card" onclick="flipCard(this, 1)"><div class="card-front">🔮 Card 2</div><div class="card-back">💋 Hadiah: Virtual Kiss Paling Manja! 💋</div></div>
-            <div class="magic-card" onclick="flipCard(this, 2)"><div class="card-front">🔮 Card 3</div><div class="card-back">🫂 Hadiah: Virtual Big Hug Yang Erat! 🫂</div></div>
-            <div class="magic-card" onclick="flipCard(this, 3)"><div class="card-front">🔮 Card 4</div><div class="card-back">✨ Hadiah: Wish Apa-apa Yun Tunaikan! ✨</div></div>
+            <div class="magic-card" onclick="flipCard(this)"><div class="card-front">🔮 Card 1</div><div class="card-back">📞 Hadiah: Call Yun Sekarang! 📱</div></div>
+            <div class="magic-card" onclick="flipCard(this)"><div class="card-front">🔮 Card 2</div><div class="card-back">💋 Hadiah: Virtual Kiss Paling Manja! 💋</div></div>
+            <div class="magic-card" onclick="flipCard(this)"><div class="card-front">🔮 Card 3</div><div class="card-back">🫂 Hadiah: Virtual Big Hug Yang Erat! 🫂</div></div>
+            <div class="magic-card" onclick="flipCard(this)"><div class="card-front">🔮 Card 4</div><div class="card-back">✨ Hadiah: Wish Apa-apa Yun Tunaikan! ✨</div></div>
         </div>
         <p id="game-status" style="font-weight: bold; color: #ff758f; margin-bottom: 15px;"></p>
         <button id="go-fw-btn" class="btn" style="display: none;" onclick="nextPage('game-screen', 'fireworks-screen')">Next Surprise! 🎆</button>
     </div>
 
-    <div id="fireworks-screen" onclick="letupkan(event)" style="display: none;">
-        <div class="final-letter-box" id="final-card" onclick="event.stopPropagation()">
+    <div id="fireworks-screen" onclick="letupkan(event)">
+        <div id="gift-envelope" onclick="bukaSurat(event)">✉️</div>
+        <div class="final-letter-box" id="final-card">
             <h2>A Message From Yun ❤️</h2>
-            <p>Happy Birthday Sayang! 🎂🎉<br><br>Good luck SPM! Yun sentiasa doakan baby buat yang terbaik. Love you! 👑✨</p>
+            <p>Happy Birthday Sayang! 🎂🎉<br><br>
+            Yun tahu perjalanan kita tak selalu mudah, tapi Yun sangat hargai setiap detik kita bersama. Yun minta maaf kalau Yun ada buat baby sedih atau kecil hati selama ni. Yun sentiasa doakan baby bahagia dunia akhirat. <br><br>
+            Good luck exam SPM baby! Yun yakin baby boleh buat yang terbaik, my queen can do this! Yun sentiasa ada kat sini sokong baby 24/7. Love you so much! 👑✨</p>
         </div>
     </div>
 
@@ -69,7 +71,6 @@
         function createHeart() { const h = document.createElement('div'); h.classList.add('heart'); h.innerHTML = '❤️'; h.style.left = Math.random() * 100 + 'vw'; h.style.animationDuration = (Math.random() * 3 + 2) + 's'; document.getElementById('hearts-container').appendChild(h); setTimeout(() => h.remove(), 5000); }
         setInterval(createHeart, 500);
         function nextPage(c, n) { document.getElementById(c).style.opacity = '0'; setTimeout(() => { document.getElementById(c).style.display = 'none'; document.getElementById(n).style.display = 'block'; setTimeout(() => document.getElementById(n).style.opacity = '1', 50); }, 500); }
-        function startMusic() { document.getElementById('bg-music').play(); }
         
         const reasons = ["Sebab baby selalu tahu macam mana nak buat Yun tersenyum. ☀️", "Sebab setiap kali borak dengan baby, rasa tenang sangat hati ni. 🧸", "Sebab baby seorang yang penyayang, penyabar walaupun Yun suka merajuk. 🥺", "Sebab Yun nampak masa depan Yun ada bersama baby tau! 💍"];
         const images = ["photo_6134180195070578679_y.jpg", "photo_6134180195070578680_y.jpg", "photo_6134180195070578684_y.jpg", "photo_6134180195070578685_y.jpg"];
@@ -77,11 +78,19 @@
         function generateReason() { idx++; if(idx < reasons.length) { document.getElementById('reason-text').innerText = reasons[idx]; document.getElementById('love-image').src = images[idx]; if(idx === 3) document.getElementById('next-btn').innerText = "Go to Gift Game 🔮"; } else nextPage('main-content', 'game-screen'); }
         
         let hasFlipped = false;
-        function flipCard(el, i) { if(hasFlipped) return; hasFlipped = true; el.classList.add('flipped'); document.getElementById('game-status').innerText = "Tahniah! " + el.querySelector('.card-back').innerText; document.getElementById('go-fw-btn').style.display = 'inline-block'; }
+        function flipCard(el) { if(hasFlipped) return; hasFlipped = true; el.classList.add('flipped'); document.getElementById('game-status').innerText = "Dapat: " + el.querySelector('.card-back').innerText; document.getElementById('go-fw-btn').style.display = 'inline-block'; }
         
         const letters = ["H", "A", "P", "P", "Y", "B", "I", "R", "T", "H", "D", "A", "Y"];
         let lIdx = 0;
-        function letupkan(e) { if(lIdx < letters.length) { const l = document.createElement('div'); l.classList.add('fw-letter'); l.innerText = letters[lIdx++]; l.style.left = e.clientX + 'px'; l.style.top = e.clientY + 'px'; document.getElementById('fireworks-screen').appendChild(l); setTimeout(() => l.remove(), 1000); } else { document.getElementById('final-card').classList.add('show'); } }
+        function letupkan(e) {
+            if (lIdx < letters.length) {
+                const l = document.createElement('div'); l.classList.add('fw-letter'); l.innerText = letters[lIdx++]; 
+                l.style.left = e.clientX + 'px'; l.style.top = e.clientY + 'px'; 
+                document.getElementById('fireworks-screen').appendChild(l); 
+                setTimeout(() => l.remove(), 1000);
+            } else { document.getElementById('gift-envelope').style.display = 'block'; }
+        }
+        function bukaSurat(e) { e.stopPropagation(); document.getElementById('gift-envelope').style.display = 'none'; document.getElementById('final-card').classList.add('show'); }
     </script>
 </body>
 </html>
