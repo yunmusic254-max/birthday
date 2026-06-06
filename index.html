@@ -95,7 +95,57 @@
             text-shadow: 0 0 10px rgba(255,117,143,0.5);
             pointer-events: none; padding: 0 25px;
             z-index: 100000;
+        }
+
+        /* ANIMASI SAMPUL SURAT MISTERI (Klik untuk buka) */
+        #gift-envelope {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            font-size: 5.5rem;
+            cursor: pointer;
+            z-index: 100004;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: float 2s ease-in-out infinite alternate;
+            display: none;
+            user-select: none;
+        }
+        @keyframes float {
+            0% { transform: translate(-50%, -55%) scale(1); filter: drop-shadow(0 0 10px #ff4d6d); }
+            100% { transform: translate(-50%, -45%) scale(1.05); filter: drop-shadow(0 0 25px #ff758f); }
+        }
+
+        /* KOTAK KAD FINAL UCAPAN YUN */
+        .final-letter-box {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 85%; max-width: 400px;
+            background: linear-gradient(135deg, rgba(37, 9, 56, 0.98), rgba(15, 4, 23, 0.98));
+            border: 2px solid #ff4d6d;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 0 35px rgba(255, 77, 109, 0.7);
+            z-index: 100005;
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: auto;
+        }
+        .final-letter-box.show {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+        .final-letter-box h2 {
+            color: #ff758f;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(255, 117, 143, 0.4);
+        }
+        .final-letter-box p {
+            font-size: 0.95rem;
             line-height: 1.6;
+            color: #f0e6ef;
+            text-align: justify;
         }
 
         /* Gaya Tulisan Huruf Meletup */
@@ -181,7 +231,18 @@
     </div>
 
     <div id="fireworks-screen" mousedown="letupkanBungaApiSini(event)" onclick="letupkanBungaApiSini(event)">
-        <div class="fw-instruction" id="fw-hint">Klik dekat mana-mana kawasan skrin sekarang guna mouse! 🤫✨</div>
+        <div class="fw-instruction" id="fw-hint">Klik dekat mana-mana kawasan skrin sekarang! 🤫✨</div>
+        
+        <div id="gift-envelope" onclick="bukaKotakSuratYun(event)">✉️</div>
+        
+        <div id="final-card" class="final-letter-box" onclick="event.stopPropagation();">
+            <h2>A Message From Yun ❤️</h2>
+            <p>
+                Happy Birthday Sayang! 🎂🎉<br><br>
+                Yun nak mintak maaf kalau selama ni Yun jadi boyfriend yang kurang and sometimes annoying buat baby... I am truly sorry. Tapi Yun nak baby tahu yang Yun sentiasa sayang baby sangat-sangat. ❤️<br><br>
+                And lastly, <b>GOOD LUCK SPM BABY!</b> Yun tahu baby dah usaha kuat dan Yun sentiasa doakan baby boleh buat yang terbaik nanti! My queen can do this! 👑✨
+            </p>
+        </div>
     </div>
 
     <script src="script.js"></script>
@@ -189,6 +250,7 @@
     <script>
         const senaraiHuruf = ["H", "A", "P", "P", "Y", "❤️", "B", "I", "R", "T", "H", "D", "A", "Y"];
         let indeksHuruf = 0;
+        let mainBungaApiTamat = false;
 
         function openFireworksSkrin() {
             document.getElementById('game-screen').style.display = 'none';
@@ -201,6 +263,9 @@
         function letupkanBungaApiSini(e) {
             if (e) e.preventDefault();
             
+            // Kalau bunga api dah tamat, skrin hitam tidak boleh dicucuk letupan lagi
+            if (mainBungaApiTamat) return;
+
             let klikX = e.clientX || (e.touches && e.touches[0].clientX) || window.innerWidth / 2;
             let klikY = e.clientY || (e.touches && e.touches[0].clientY) || window.innerHeight / 2;
 
@@ -208,3 +273,35 @@
 
             // 1. Keluarkan Huruf Satu Demi Satu
             if (indeksHuruf < senaraiHuruf.length) {
+                const hrfDiv = document.createElement('div');
+                hrfDiv.classList.add('fw-letter');
+                hrfDiv.style.left = klikX + 'px';
+                hrfDiv.style.top = klikY + 'px';
+                hrfDiv.innerText = senaraiHuruf[indeksHuruf];
+                skrin.appendChild(hrfDiv);
+                
+                indeksHuruf++;
+                setTimeout(() => { hrfDiv.remove(); }, 800);
+            }
+
+            // 2. Tabur Letupan Sparkle Berwarna-warni
+            buatLetupanSparkle(klikX, klikY);
+
+            // 3. Kemas kini mesej hint arahan
+            const hint = document.getElementById('fw-hint');
+            if (indeksHuruf < senaraiHuruf.length) {
+                hint.innerText = "Klik lagi, jom habiskan! (Huruf seterusnya...) ✨";
+            } else {
+                mainBungaApiTamat = true;
+                hint.innerText = "Yayyy! Ada satu surat misteri muncul... Ketuk surat tu sekarang! 🤫👇";
+                
+                // Memunculkan sampul surat terapung di tengah
+                const envelope = document.getElementById('gift-envelope');
+                envelope.style.display = 'block';
+                setTimeout(() => {
+                    envelope.style.transform = 'translate(-50%, -50%) scale(1)';
+                }, 100);
+            }
+        }
+
+        function buatLetupanSparkle(x, y
