@@ -6,456 +6,80 @@
     <title>Happy Birthday Baby ✨</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #0b020c;
-            color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        #hearts-container {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            pointer-events: none; z-index: 1; overflow: hidden;
-        }
-        .heart {
-            position: absolute; color: #ff4d6d; opacity: 0.7;
-            animation: fall linear forwards;
-        }
-        @keyframes fall {
-            to { transform: translateY(105vh); opacity: 0; }
-        }
-        .container {
-            width: 90%; max-width: 450px; padding: 25px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            z-index: 10;
-            position: relative;
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-        h1 { font-size: 1.8rem; color: #ff4d6d; margin-bottom: 15px; text-shadow: 0 0 10px rgba(255,77,109,0.3); }
-        p { font-size: 1rem; line-height: 1.6; color: #f0e6ef; margin-bottom: 20px; }
-        .btn {
-            background: linear-gradient(45deg, #ff4d6d, #ff758f);
-            color: white; border: none; padding: 12px 28px;
-            font-size: 1rem; border-radius: 50px; cursor: pointer;
-            font-weight: bold; transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
-            position: relative; z-index: 20;
-        }
-        .btn:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(255, 77, 109, 0.6); }
-        .love-card img {
-            width: 100%; max-height: 300px; object-fit: cover;
-            border-radius: 15px; margin-bottom: 15px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        /* Gaya Kad Magik */
-        .card-container {
-            display: grid; grid-template-columns: repeat(2, 1fr);
-            gap: 15px; margin: 20px 0; perspective: 1000px;
-        }
-        .magic-card {
-            width: 100%; height: 140px; cursor: pointer;
-            position: relative; transform-style: preserve-3d;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+        body { font-family: 'Poppins', sans-serif; background-color: #0b020c; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; text-align: center; position: relative; overflow: hidden; }
+        #hearts-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 1; }
+        .heart { position: absolute; color: #ff4d6d; opacity: 0.7; animation: fall linear forwards; }
+        @keyframes fall { to { transform: translateY(105vh); opacity: 0; } }
+        .container { width: 90%; max-width: 450px; padding: 25px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); z-index: 10; transition: opacity 0.5s ease; }
+        h1 { font-size: 1.8rem; color: #ff4d6d; margin-bottom: 15px; }
+        .btn { background: linear-gradient(45deg, #ff4d6d, #ff758f); color: white; border: none; padding: 12px 28px; font-size: 1rem; border-radius: 50px; cursor: pointer; font-weight: bold; margin-top: 15px; }
+        .love-card img { width: 100%; max-height: 300px; object-fit: cover; border-radius: 15px; margin-bottom: 15px; border: 2px solid rgba(255, 255, 255, 0.2); }
+        .card-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 20px 0; perspective: 1000px; }
+        .magic-card { width: 100%; height: 140px; cursor: pointer; position: relative; transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
         .magic-card.flipped { transform: rotateY(180deg); }
-        .card-front, .card-back {
-            position: absolute; width: 100%; height: 100%;
-            backface-visibility: hidden; border-radius: 12px;
-            display: flex; justify-content: center; align-items: center;
-            padding: 10px; font-size: 0.9rem; font-weight: bold;
-        }
-        .card-front {
-            background: linear-gradient(135deg, #4a00e0, #8e2de2);
-            border: 2px solid #ff758f; color: #fff;
-        }
-        .card-back {
-            background: #250938; border: 2px solid #ff4d6d;
-            color: #ff758f; transform: rotateY(180deg);
-        }
-
-        /* SCREEN INTERAKTIF BUNGA API */
-        #fireworks-screen {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background-color: #050107; 
-            z-index: 99999; 
-            display: none;
-            cursor: pointer;
-        }
-        .fw-instruction {
-            position: absolute; top: 40px; width: 100%; text-align: center;
-            color: #ff758f; font-size: 1.3rem; font-weight: bold;
-            text-shadow: 0 0 10px rgba(255,117,143,0.5);
-            pointer-events: none; padding: 0 25px;
-            z-index: 100000;
-        }
-
-        /* ANIMASI SAMPUL SURAT MISTERI */
-        #gift-envelope {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            font-size: 5.5rem;
-            cursor: pointer;
-            z-index: 100004;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            animation: float 2s ease-in-out infinite alternate;
-            display: none;
-            user-select: none;
-        }
-        @keyframes float {
-            0% { transform: translate(-50%, -55%) scale(1); filter: drop-shadow(0 0 10px #ff4d6d); }
-            100% { transform: translate(-50%, -45%) scale(1.05); filter: drop-shadow(0 0 25px #ff758f); }
-        }
-
-        /* KOTAK KAD FINAL UCAPAN YUN */
-        .final-letter-box {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            width: 85%; max-width: 400px;
-            background: linear-gradient(135deg, rgba(37, 9, 56, 0.98), rgba(15, 4, 23, 0.98));
-            border: 2px solid #ff4d6d;
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 0 35px rgba(255, 77, 109, 0.7);
-            z-index: 100005;
-            opacity: 0;
-            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            pointer-events: auto;
-        }
-        .final-letter-box.show {
-            transform: translate(-50%, -50%) scale(1);
-            opacity: 1;
-        }
-        .final-letter-box h2 {
-            color: #ff758f;
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            text-shadow: 0 0 10px rgba(255, 117, 143, 0.4);
-        }
-        .final-letter-box p {
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: #f0e6ef;
-            text-align: justify;
-        }
-
-        /* Gaya Tulisan Huruf Meletup */
-        .fw-letter {
-            position: absolute;
-            font-size: 4rem;
-            font-weight: 900;
-            color: #ff4d6d;
-            text-shadow: 0 0 20px #ff758f, 0 0 30px #ff4d6d;
-            transform: translate(-50%, -50%) scale(0);
-            animation: popOut 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            pointer-events: none;
-            z-index: 999999;
-            user-select: none;
-        }
-        @keyframes popOut {
-            0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
-            50% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
-            100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
-        }
-
-        /* Serpihan Sparkle */
-        .sparkle {
-            position: absolute;
-            width: 7px; height: 7px;
-            border-radius: 50%;
-            pointer-events: none;
-            animation: explode 0.7s ease-out forwards;
-            z-index: 999999;
-        }
-        @keyframes explode {
-            0% { transform: translate(-50%, -50%) translate(0, 0); opacity: 1; }
-            100% { transform: translate(-50%, -50%) translate(var(--mx), var(--my)); opacity: 0; }
-        }
+        .card-front, .card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 12px; display: flex; justify-content: center; align-items: center; padding: 10px; font-size: 0.9rem; font-weight: bold; }
+        .card-front { background: linear-gradient(135deg, #4a00e0, #8e2de2); border: 2px solid #ff758f; }
+        .card-back { background: #250938; border: 2px solid #ff4d6d; color: #ff758f; transform: rotateY(180deg); }
+        #fireworks-screen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #050107; z-index: 99999; display: none; cursor: pointer; }
+        .fw-letter { position: absolute; font-size: 4rem; color: #ff4d6d; transform: translate(-50%, -50%); pointer-events: none; z-index: 999999; animation: pop 0.8s forwards; }
+        @keyframes pop { 0% { transform: translate(-50%, -50%) scale(0); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 0; } }
+        .final-letter-box { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); width: 85%; max-width: 400px; background: #1a0626; border: 2px solid #ff4d6d; padding: 25px; border-radius: 20px; transition: all 0.5s; opacity: 0; }
+        .final-letter-box.show { transform: translate(-50%, -50%) scale(1); opacity: 1; }
     </style>
 </head>
 <body>
-
     <div id="hearts-container"></div>
+    <audio id="bg-music" loop><source src="JVKE, ZVC - made for me (official lyric video) [OVlxbGND20A].mp3" type="audio/mp3"></audio>
 
-    <audio id="bg-music" loop>
-        <source src="JVKE, ZVC - made for me (official lyric video) [OVlxbGND20A].mp3" type="audio/mp3">
-    </audio>
-
-    <!-- HALAMAN 1 -->
     <div id="intro-screen" class="container">
-        <h1>Hey Beautiful, Happy Birthday! ✨</h1>
-        <p>Yun ada buat sesuatu yang istimewa yang dipenuhi dengan memori kita bersama. Sila klik butang di bawah, Baby.</p>
-        <button class="btn" onclick="startMusic(); nextPage('intro-screen', 'main-content')">Open Surprise 🎁</button>
+        <h1>Hey Beautiful! ✨</h1>
+        <p>Yun ada surprise untuk Baby.</p>
+        <button class="btn" onclick="startMusic(); nextPage('intro-screen', 'main-content')">Open 🎁</button>
     </div>
 
-    <!-- HALAMAN 2 -->
     <div id="main-content" class="container" style="display: none; opacity: 0;">
         <h1>Kenapa Yun Sayang Baby ❤️</h1>
         <div class="love-card">
-            <!-- Gambar Pertama Start Kat Sini -->
-            <img id="love-image" src="photo_6134180195070578679_y.jpg" alt="Memori Kita">
-            <p id="reason-text">Sebab baby selalu tahu macam mana nak buat Yun tersenyum. ☀️</p>
+            <img id="love-image" src="photo_6134180195070578679_y.jpg">
+            <p id="reason-text">Sebab baby selalu buat Yun tersenyum. ☀️</p>
         </div>
         <button id="next-btn" class="btn" onclick="generateReason()">Next Reason ❤️</button>
     </div>
 
-    <!-- HALAMAN 3 -->
     <div id="game-screen" class="container" style="display: none; opacity: 0;">
-        <h1>✨ Kad Magik Keberuntungan ✨</h1>
-        <p>Pilih SATU kad magik di bawah untuk tebus hadiah misteri daripada Yun! 🤭</p>
+        <h1>✨ Kad Magik ✨</h1>
         <div class="card-container">
-            <div class="magic-card" onclick="flipCard(this, 0)">
-                <div class="card-front">🔮 Card 1</div>
-                <div class="card-back" id="gift-0">Hadiah 1</div>
-            </div>
-            <div class="magic-card" onclick="flipCard(this, 1)">
-                <div class="card-front">🔮 Card 2</div>
-                <div class="card-back" id="gift-1">Hadiah 2</div>
-            </div>
-            <div class="magic-card" onclick="flipCard(this, 2)">
-                <div class="card-front">🔮 Card 3</div>
-                <div class="card-back" id="gift-2">Hadiah 3</div>
-            </div>
-            <div class="magic-card" onclick="flipCard(this, 3)">
-                <div class="card-front">🔮 Card 4</div>
-                <div class="card-back" id="gift-3">Hadiah 4</div>
-            </div>
+            <div class="magic-card" onclick="flipCard(this, 0)"><div class="card-front">🔮 Card 1</div><div class="card-back">📞 Hadiah: Call Yun Sekarang! 📱</div></div>
+            <div class="magic-card" onclick="flipCard(this, 1)"><div class="card-front">🔮 Card 2</div><div class="card-back">💋 Hadiah: Virtual Kiss Paling Manja! 💋</div></div>
+            <div class="magic-card" onclick="flipCard(this, 2)"><div class="card-front">🔮 Card 3</div><div class="card-back">🫂 Hadiah: Virtual Big Hug Yang Erat! 🫂</div></div>
+            <div class="magic-card" onclick="flipCard(this, 3)"><div class="card-front">🔮 Card 4</div><div class="card-back">✨ Hadiah: Wish Apa-apa Yun Tunaikan! ✨</div></div>
         </div>
-        <p id="game-status" style="font-weight: bold; color: #ff758f; white-space: pre-line; margin-bottom: 15px;"></p>
-        <button id="go-fw-btn" class="btn" style="display: none;" onclick="openFireworksSkrin()">Next Surprise! 🎆</button>
+        <p id="game-status"></p>
+        <button id="go-fw-btn" class="btn" style="display: none;" onclick="nextPage('game-screen', 'fireworks-screen')">Next Surprise! 🎆</button>
     </div>
 
-    <!-- HALAMAN 4 -->
-    <div id="fireworks-screen" onclick="letupkanBungaApiSini(event)">
-        <div class="fw-instruction" id="fw-hint">Klik dekat mana-mana kawasan skrin sekarang! 🤫✨</div>
-        <div id="gift-envelope" onclick="bukaKotakSuratYun(event)">✉️</div>
-        
-        <div id="final-card" class="final-letter-box" onclick="event.stopPropagation();">
-            <h2>A Message From Yun ❤️</h2>
-            <p>
-                Happy Birthday Sayang! 🎂🎉<br><br>
-                Yun nak mintak maaf kalau selama ni Yun jadi boyfriend yang kurang and sometimes annoying buat baby... I am truly sorry. Tapi Yun nak baby tahu yang Yun sentiasa sayang baby sangat-sangat. ❤️<br><br>
-                And lastly, <b>GOOD LUCK SPM BABY!</b> Yun tahu baby dah usaha kuat dan Yun sentiasa doakan baby boleh buat yang terbaik nanti! My queen can do this! 👑✨
-            </p>
+    <div id="fireworks-screen" onclick="letupkan(event)">
+        <div class="final-letter-box" id="final-card" onclick="event.stopPropagation()">
+            <h2>Message From Yun ❤️</h2>
+            <p>Happy Birthday Sayang! Good luck SPM, Yun sentiasa ada untuk Baby! 👑</p>
         </div>
     </div>
 
     <script>
-        // --- 1. HUJAN HEART ---
-        function createHeart() {
-            const container = document.getElementById('hearts-container');
-            if(!container) return;
-            const heart = document.createElement('div');
-            heart.classList.add('heart');
-            heart.innerHTML = '❤️';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.top = '-5vh';
-            const size = Math.random() * 15 + 10;
-            heart.style.fontSize = size + 'px';
-            const duration = Math.random() * 3 + 3;
-            heart.style.animationDuration = duration + 's';
-            container.appendChild(heart);
-            setTimeout(() => { heart.remove(); }, duration * 1000);
-        }
-        setInterval(createHeart, 400);
-
-        // --- 2. MUZIK & NAVIGASI ---
-        let musicStarted = false;
-        function startMusic() {
-            if (!musicStarted) {
-                const music = document.getElementById('bg-music');
-                if(music) music.play().catch(e => console.log("Muzik diaktifkan."));
-                musicStarted = true;
-            }
-        }
-
-        function nextPage(currentId, nextId) {
-            const current = document.getElementById(currentId);
-            const next = document.getElementById(nextId);
-            if(current) {
-                current.style.opacity = '0';
-                setTimeout(() => { current.style.display = 'none'; }, 500);
-            }
-            if(next) {
-                setTimeout(() => {
-                    next.style.display = 'block';
-                    setTimeout(() => { next.style.opacity = '1'; }, 50);
-                }, 550);
-            }
-        }
-
-        // --- 3. ALASAN & SUSUNAN GAMBAR ASLI KAU ---
-        const reasons = [
-            "Sebab baby selalu tahu macam mana nak buat Yun tersenyum. ☀️",
-            "Sebab setiap kali borak dengan baby, rasa tenang sangat hati ni. 🧸",
-            "Sebab baby seorang yang penyayang, penyabar walaupun Yun suka merajuk. 🥺",
-            "Sebab Yun nampak masa depan Yun ada bersama baby tau! 💍"
-        ];
+        function createHeart() { const h = document.createElement('div'); h.classList.add('heart'); h.innerHTML = '❤️'; h.style.left = Math.random() * 100 + 'vw'; h.style.animationDuration = (Math.random() * 3 + 2) + 's'; document.getElementById('hearts-container').appendChild(h); setTimeout(() => h.remove(), 5000); }
+        setInterval(createHeart, 500);
+        function nextPage(c, n) { document.getElementById(c).style.opacity = '0'; setTimeout(() => { document.getElementById(c).style.display = 'none'; document.getElementById(n).style.display = 'block'; setTimeout(() => document.getElementById(n).style.opacity = '1', 50); }, 500); }
+        function startMusic() { document.getElementById('bg-music').play(); }
         
-        // NAMA FAIL SEBENAR DAH SIAP DIMASUKKAN DI SINI:
-        const images = [
-            "photo_6134180195070578679_y.jpg", 
-            "photo_6134180195070578680_y.jpg", 
-            "photo_6134180195070578684_y.jpg", 
-            "photo_6134180195070578685_y.jpg"
-        ];
+        const reasons = ["Sebab baby selalu buat Yun tersenyum. ☀️", "Sebab setiap kali borak rasa tenang. 🧸", "Sebab baby penyabar walaupun Yun merajuk. 🥺", "Sebab Yun nampak masa depan bersama baby! 💍"];
+        const images = ["photo_6134180195070578679_y.jpg", "photo_6134180195070578680_y.jpg", "photo_6134180195070578684_y.jpg", "photo_6134180195070578685_y.jpg"];
+        let idx = 0;
+        function generateReason() { idx++; if(idx < reasons.length) { document.getElementById('reason-text').innerText = reasons[idx]; document.getElementById('love-image').src = images[idx]; if(idx === 3) document.getElementById('next-btn').innerText = "Go to Gift Game 🔮"; } else nextPage('main-content', 'game-screen'); }
         
-        let currentReasonIdx = 0;
-
-        function generateReason() {
-            currentReasonIdx++;
-            if (currentReasonIdx < reasons.length) {
-                document.getElementById('reason-text').innerText = reasons[currentReasonIdx];
-                if(images[currentReasonIdx]) {
-                    document.getElementById('love-image').src = images[currentReasonIdx];
-                }
-                if(currentReasonIdx === reasons.length - 1) {
-                    document.getElementById('next-btn').innerText = "Go to Gift Game 🔮";
-                }
-            } else {
-                nextPage('main-content', 'game-screen');
-            }
-        }
-
-        // --- 4. GAME KAD (FUNGSI ASING - KAD DIPILIH SAHAJA BUKA DULU) ---
-        const gifts = [
-            "🧸 Hadiah Comel: Teddy Bear Besar untuk peneman tidur Baby!",
-            "📞 Denda Comel: Kena Call Yun Sekarang Juga! 😜",
-            "🍿 Date Reward: Yun belanja tengok Wayang & Makan Best!",
-            "🍫 Sweet Treat: Coklat kegemaran baby sampai depan rumah!"
-        ];
         let hasFlipped = false;
-
-        function shuffle(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-        }
-        shuffle(gifts);
-
-        // NAMA FUNGSI DAH SAMA: flipCard (Huruf C besar)
-        function flipCard(cardElement, index) {
-            if (hasFlipped) return;
-            hasFlipped = true;
-
-            for (let i = 0; i < 4; i++) {
-                document.getElementById(`gift-${i}`).innerText = gifts[i];
-            }
-
-            cardElement.classList.add('flipped');
-
-            const allCards = document.querySelectorAll('.magic-card');
-            setTimeout(() => {
-                allCards.forEach((c, i) => {
-                    if (i !== index) {
-                        c.classList.add('flipped');
-                    }
-                });
-            }, 1500);
-
-            const status = document.getElementById('game-status');
-            status.innerText = "Tahniah Baby! Sila screenshot kad ini dan hantar pada Yun untuk tebus:\n\n\" " + gifts[index] + " \"";
-            
-            setTimeout(() => {
-                document.getElementById('go-fw-btn').style.display = 'inline-block';
-            }, 2200);
-        }
-
-        // --- 5. BUNGA API ---
-        const senaraiHuruf = ["H", "A", "P", "P", "Y", "❤️", "B", "I", "R", "T", "H", "D", "A", "Y"];
-        let indeksHuruf = 0;
-        let mainBungaApiTamat = false;
-
-        function openFireworksSkrin() {
-            nextPage('game-screen', 'fireworks-screen');
-        }
-
-        function letupkanBungaApiSini(e) {
-            if (mainBungaApiTamat) return;
-
-            let klikX = e.clientX || (e.touches && e.touches[0].clientX) || window.innerWidth / 2;
-            let klikY = e.clientY || (e.touches && e.touches[0].clientY) || window.innerHeight / 2;
-
-            const skrin = document.getElementById('fireworks-screen');
-
-            if (indeksHuruf < senaraiHuruf.length) {
-                const hrfDiv = document.createElement('div');
-                hrfDiv.classList.add('fw-letter');
-                hrfDiv.style.left = klikX + 'px';
-                hrfDiv.style.top = klikY + 'px';
-                hrfDiv.innerText = senaraiHuruf[indeksHuruf];
-                skrin.appendChild(hrfDiv);
-                
-                indeksHuruf++;
-                setTimeout(() => { hrfDiv.remove(); }, 800);
-            }
-
-            buatLetupanSparkle(klikX, klikY);
-
-            const hint = document.getElementById('fw-hint');
-            if (indeksHuruf < senaraiHuruf.length) {
-                hint.innerText = "Klik lagi, jom habiskan! (Huruf seterusnya...) ✨";
-            } else {
-                mainBungaApiTamat = true;
-                hint.innerText = "Yayyy! Ada satu surat misteri muncul... Ketuk surat tu sekarang! 🤫👇";
-                
-                const envelope = document.getElementById('gift-envelope');
-                envelope.style.display = 'block';
-                setTimeout(() => {
-                    envelope.style.transform = 'translate(-50%, -50%) scale(1)';
-                }, 100);
-            }
-        }
-
-        // FUNGSI SPARKLE
-        function buatLetupanSparkle(x, y) {
-            const skrin = document.getElementById('fireworks-screen');
-            for (let i = 0; i < 30; i++) {
-                const spkl = document.createElement('div');
-                spkl.classList.add('sparkle');
-                spkl.style.left = x + 'px';
-                spkl.style.top = y + 'px';
-                
-                const ang = Math.random() * Math.PI * 2;
-                const dist = Math.random() * 140 + 50;
-                const mx = Math.cos(ang) * dist;
-                const my = Math.sin(ang) * dist;
-                
-                spkl.style.setProperty('--mx', mx + 'px');
-                spkl.style.setProperty('--my', my + 'px');
-                
-                const warna = ['#ff4d6d', '#ff758f', '#ffd166', '#fff', '#00f5d4', '#70e000'];
-                spkl.style.backgroundColor = warna[Math.floor(Math.random() * warna.length)];
-                spkl.style.boxShadow = '0 0 12px ' + spkl.style.backgroundColor;
-
-                skrin.appendChild(spkl);
-                setTimeout(() => { spkl.remove(); }, 700);
-            }
-        }
-
-        // BUKA SURAT
-        function bukaKotakSuratYun(e) {
-            if (e) e.stopPropagation();
-            const envelope = document.getElementById('gift-envelope');
-            const rect = envelope.getBoundingClientRect();
-            buatLetupanSparkle(rect.left + rect.width/2, rect.top + rect.height/2);
-            envelope.style.display = 'none';
-            document.getElementById('fw-hint').innerText = "Happy Birthday Sayang! ❤️🎂";
-            setTimeout(() => {
-                document.getElementById('final-card').classList.add('show');
-            }, 300);
-        }
+        function flipCard(el, i) { if(hasFlipped) return; hasFlipped = true; el.classList.add('flipped'); document.getElementById('game-status').innerText = "Dapat: " + el.querySelector('.card-back').innerText; document.getElementById('go-fw-btn').style.display = 'inline-block'; }
+        
+        function letupkan(e) { document.getElementById('final-card').classList.add('show'); }
     </script>
 </body>
 </html>
